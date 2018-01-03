@@ -1,4 +1,4 @@
-#dappTx
+# dappTx
 App Annie for Dapps. Track transaction volume of biggest projects.
 
 So far: hitting Etherscan API for Cryptokitties transactions
