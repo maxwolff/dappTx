@@ -1,0 +1,15 @@
+{
+  "name": "tx",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "etherscan-api": "^4.0.0",
+    "simple-get": "^2.7.0"
+  }
+}
