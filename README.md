@@ -1,4 +1,4 @@
-#dappTx
+# dappTx
 App Annie for Dapps. Track transaction volume of biggest projects.
 
 inspiration from @owocki https://github.com/gitcoinco/skunkworks/issues/19#issuecomment-354695051
