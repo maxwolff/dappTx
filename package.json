@@ -9,7 +9,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "async-request": "^1.2.0",
     "etherscan-api": "^4.0.0",
-    "simple-get": "^2.7.0"
+    "simple-get": "^2.7.0",
+    "sleep": "^5.1.1"
   }
 }
