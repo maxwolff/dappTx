@@ -1,12 +1,9 @@
 let request = require('async-request')
 const fs = require('fs');
+const insert = require('./insert.js')
 
 const network = 'mainnet'
-
-var blocks= {
-	from: 0,
-	to: 'latest'
-}
+var latestBlock = 0
 
 function getInfuraURL({ network, req }) {
   const { method, params } = req
@@ -17,7 +14,7 @@ function getInfuraURL({ network, req }) {
 
 async function get(url){
 	try {
-		result = await request(url);
+		result = await request(url)
 		return result
 	} catch (e){
 		throw e 
@@ -44,6 +41,18 @@ async function getBlockNumber(blockNum){
 	return JSON.parse(result.body).result 
 }
 
+async function getBlockByNumber(number){
+	var blockNum = '0x' + number.toString(16); // convert to hex
+	const req = {
+		method: 'eth_getBlockByNumber',
+		params: [blockNum,true]
+	}
+	const target = getInfuraURL({network,req})
+	console.log(target)
+	var result = await get(target)
+	return JSON.parse(result.body).result
+}
+
 async function getTxByBlockNumberAndIndex(blockNum, index){
 	const req = {
 		method: 'eth_getTransactionByBlockNumberAndIndex',
@@ -63,25 +72,59 @@ function saveFile (fileName,data){
 	console.log("printed to ", fileName)
 }
 
-async function main(){
-	
-	var num = await getBlockNumber('latest')
-	var tx = await getTxCount(num)
-	var data = []
-	for (i = 0x0; i < tx; i ++){
-		var index = '0x' + i.toString(16)
-		blob = await getTxByBlockNumberAndIndex('latest',index)
-		data.push(blob)
-
-		console.log(index)
+async function getData(blockNum){
+	var result = []
+	var block = await(getBlockByNumber(blockNum))
+	var transactions = block["transactions"]
+	var timestamp = block["timestamp"]
+	for (var i in transactions){
+		var info = transactions[i]
+		info["timestamp"] = timestamp
+		info["blockNumber"] = blockNum
+		insert(info) // inserts into postgres DB . from insert.js
+		result.push(info)
 	}
-	data = await data
-	console.log(data.length)
+	return result
+}
+// save backlog function 
+async function getUpdate(range){
+	var result = []
+	latestBlock = await getBlockNumber('latest')
+	for(var i=0; j = range,i<j; i++){
+		var data = await getData(latestBlock - i)
+		result.push(data)
+	}
+	return result
+}
 
-	saveFile("tx.json",data)
 
+async function main(){
+	var back = 1
+	var update = await getUpdate(back)// # indices to go back, # block returned - 1
+	var saveName = latestBlock + "back" + back + ".json"  
+	saveFile(saveName,update) 
 }
 
 main()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
