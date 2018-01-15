@@ -10,8 +10,13 @@
   "license": "ISC",
   "dependencies": {
     "async-request": "^1.2.0",
+    "chart.js": "^2.7.1",
     "etherscan-api": "^4.0.0",
+    "pg": "^7.4.1",
     "simple-get": "^2.7.0",
     "sleep": "^5.1.1"
+  },
+  "devDependencies": {
+    "mocha": "^4.1.0"
   }
 }
