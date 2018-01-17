@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Test</title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300' rel='stylesheet' type='text/css'>
+  </head>
+  <body>
+    <div class="container">
+      <fieldset>
+        <form action="/" method="post">
+          <input name="city" type="text" class="ghost-input" placeholder="Enter a City" required>
+          <input type="submit" class="ghost-button" value="Get Weather">
+        </form>
+        <% if(weather !== null){ %>
+          <p><%= weather[0]['timestamp'] %></p>
+        <% } 
+        %>
+
+        <% if(error !== null){ %>
+          <p><%= error %></p>
+        <% } %>
+      </fieldset>
+    </div>
+
+    <script src = 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.min.js'></script>
+    <script src = 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.js'></script>
+    <script src="http://code.jquery.com/jquery-2.1.4.min.js" charset="utf-8"></script>
+    <canvas id="myChart" width="400" height="400"></canvas>
+    <script> 
+      var chartData;
+      $(function(){
+        $.ajax({
+          url: 'http://localhost:3000/',
+          type: 'GET',
+          success : function(data) {
+            chartData = data;
+            console.log(data);
+          }
+      });
+});
+    </script>
+    
+  </body>
+</html>
+
+

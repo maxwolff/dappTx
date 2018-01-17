@@ -8,6 +8,8 @@ const env = {
   port: 5432,
 }
 
+module.exports = getContractFrequency; 
+
 const pool = new Pool(env)
 
 
@@ -17,7 +19,6 @@ async function getUniqueTimestamps(hexStart){
 	try {
 		const stampQuery = "SELECT DISTINCT (blob ->> 'timestamp') AS time FROM transactions WHERE blob ->> 'timestamp' > '" + hexStart + "';"
 	 	const res = await pool.query(stampQuery)
-	 	console.log(res.rows)
 	 	for (i in res.rows){
 	 		stamps.push(res.rows[i]['time'])
 	 	}
@@ -59,10 +60,9 @@ async function getContractFrequency(contractID,timeStart, timeEnd){
 	var frequencies = [];
 	var stamps = await getUniqueTimestamps(hexStart)
 	for (i in stamps){
-		console.log(i)
 		var total = await getTxCount(stamps[i])
 		var contractFreq = await getContractOccurence(stamps[i], contractID)
-		var resultArr = {'timestmap': stamps[i],'totalTransactions':total, 'contractFreq': contractFreq}
+		var resultArr = {'timestamp': stamps[i],'totalTransactions':total, 'contractFreq': contractFreq}
 		frequencies.push(resultArr)
 	}
 	return frequencies
