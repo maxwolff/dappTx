@@ -10,7 +10,7 @@ const env = {
 
 module.exports = getContractFrequency; 
 
-const pool = new Pool(env)
+const pool = new Pool(env) // maybe shouldnt be using a pool?
 
 
 //returns unique timestamps we have data for since a certain timestmap
@@ -54,9 +54,8 @@ async function getContractOccurence(stamp, contractID){
 	return contractOccurence
 }
 
-async function getContractFrequency(contractID,timeStart, timeEnd){
+async function getContractFrequency(contractID,timeStart){
 	var hexStart = '0x' + timeStart.toString(16);
-	var hexEnd = '0x' + timeEnd.toString(16);
 	var frequencies = [];
 	var stamps = await getUniqueTimestamps(hexStart)
 	for (i in stamps){
@@ -69,10 +68,9 @@ async function getContractFrequency(contractID,timeStart, timeEnd){
 }
 
 async function main(){
-	var id = '0x8d12a197cb00d4747a1fe03395095ce2a5cc6819' // etherdelta method 2?
-	var start = 1514764800
-	var end = 1515906166
-	var result = await getContractFrequency(id, start, end)
+	var id = '.' //etherdelta_2 contract address https://etherscan.io/address/0x8d12a197cb00d4747a1fe03395095ce2a5cc6819
+	var start = 1514764800 // start time 
+	var result = await getContractFrequency(id, start)
 	console.log(result)
 }
 
