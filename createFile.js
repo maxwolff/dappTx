@@ -1,130 +1,109 @@
-let request = require('async-request')
-const fs = require('fs');
-const insert = require('./insert.js')
+const request = require('async-request'),
+      insert = require('./insert.js'),
+      fs = require('fs');
 
-const network = 'mainnet'
-var latestBlock = 0
+const network = 'mainnet';
+let latestBlock = 0;
 
-function getInfuraURL({ network, req }) {
-  const { method, params } = req
-  const paramsString = encodeURIComponent(JSON.stringify(params))
-  const targetUrl = `https://api.infura.io/v1/jsonrpc/${network}/${method}?params=${paramsString}`
-  return targetUrl
-} 
+const getInfuraURL = ({ network, req }) => {
+  const { method, params } = req;
+  const paramsString = encodeURIComponent(JSON.stringify(params));
+  const targetUrl = `https://api.infura.io/v1/jsonrpc/${network}/${method}?params=${paramsString}`;
+  return targetUrl;
+}
 
-async function get(url){
+const get = async url => {
 	try {
-		result = await request(url)
-		return result
-	} catch (e){
-		throw e 
+		result = await request(url);
+		return result;
+	} catch (e) {
+		throw e;
 	}
 }
 
-async function getTxCount(blockNum){
+const getTxCount = async blockNum => {
 	const req = {
 		method: 'eth_getBlockTransactionCountByNumber',
 		params: [blockNum]
-	}
-	const target = getInfuraURL({network,req})
-	var result = await get(target)
-	return JSON.parse(result.body).result 
+	};
+	const target = getInfuraURL({network,req});
+	const result = await get(target);
+	return JSON.parse(result.body).result;
 }
 
-async function getBlockNumber(blockNum){
+const getBlockNumber = async blockNum => {
 	const req = {
 		method: 'eth_blockNumber',
 		params: [blockNum]
-	}
-	const target = getInfuraURL({network,req})
-	var result = await get(target)
-	return JSON.parse(result.body).result 
+	};
+	const target = getInfuraURL({network,req});
+	const result = await get(target);
+	return JSON.parse(result.body).result;
 }
 
-async function getBlockByNumber(number){
-	var blockNum = '0x' + number.toString(16); // convert to hex
+const getBlockByNumber = async number => {
+	const blockNum = '0x' + number.toString(16); // convert to hex
 	const req = {
 		method: 'eth_getBlockByNumber',
-		params: [blockNum,true]
-	}
-	const target = getInfuraURL({network,req})
-	console.log(target)
-	var result = await get(target)
-	return JSON.parse(result.body).result
+		params: [blockNum, true]
+	};
+	const target = getInfuraURL({network,req});
+	console.log(target);
+	const result = await get(target);
+	return JSON.parse(result.body).result;
 }
 
-async function getTxByBlockNumberAndIndex(blockNum, index){
+const getTxByBlockNumberAndIndex = async (blockNum, index) => {
 	const req = {
 		method: 'eth_getTransactionByBlockNumberAndIndex',
 		params: [blockNum,index]
-	}
-	const target = getInfuraURL({network,req})
-	var result = await get(target)
-	return JSON.parse(result.body).result 
+	};
+	const target = getInfuraURL({network,req});
+	const result = await get(target);
+	return JSON.parse(result.body).result;
 }
 
-function saveFile (fileName,data){
-	fs.writeFile(fileName, JSON.stringify(data,null), function(err){
-		if(err){
+const saveFile = (fileName, data) => {
+	fs.writeFile(fileName, JSON.stringify(data,null), (err) => {
+		if(err) {
 			throw err;
 		}
-	});	
-	console.log("printed to ", fileName)
+	});
+	console.log("printed to ", fileName);
 }
 
-async function getData(blockNum){
-	var result = []
-	var block = await(getBlockByNumber(blockNum))
-	var transactions = block["transactions"]
-	var timestamp = block["timestamp"]
-	for (var i in transactions){
-		var info = transactions[i]
-		info["timestamp"] = timestamp
-		info["blockNumber"] = blockNum
-		insert(info) // inserts into postgres DB . from insert.js
-		result.push(info)
+const getData = async blockNum => {
+	let result = [];
+	let block = await(getBlockByNumber(blockNum));
+	const transactions = block["transactions"];
+	const timestamp = block["timestamp"];
+
+  transactions.forEach(transaction => {
+    let info = transaction;
+		info["timestamp"] = timestamp;
+		info["blockNumber"] = blockNum;
+		insert(info); // inserts into postgres DB . from insert.js
+		result.push(info);
+  });
+	return result;
+}
+
+// save backlog function
+const getUpdate = async range => {
+	let result = [];
+	latestBlock = await getBlockNumber('latest');
+	for(let i = 0; j = range, i < j; i++) {
+		let data = await getData(latestBlock - i);
+		result.push(data);
 	}
-	return result
-}
-// save backlog function 
-async function getUpdate(range){
-	var result = []
-	latestBlock = await getBlockNumber('latest')
-	for(var i=0; j = range,i<j; i++){
-		var data = await getData(latestBlock - i)
-		result.push(data)
-	}
-	return result
+	return result;
 }
 
-
-async function main(){
-	var back = 1
-	var update = await getUpdate(back)// # indices to go back, # block returned - 1
-	var saveName = latestBlock + "back" + back + ".json"  
-	saveFile(saveName,update) 
+const main = async() => {
+	let back = 1;
+	let update = await getUpdate(back);// # indices to go back, # block returned - 1
+	const saveName = latestBlock + "back" + back + ".json";
+	saveFile(saveName, update);
 }
 
 main()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
