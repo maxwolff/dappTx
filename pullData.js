@@ -88,7 +88,7 @@ const getData = async blockNum => {
 	return result;
 }
 
-// save backlog function
+// grab last X block data
 const getUpdate = async range => {
 	let result = [];
 	latestBlock = await getBlockNumber('latest');
@@ -100,7 +100,7 @@ const getUpdate = async range => {
 }
 
 const main = async() => {
-	let back = 1;
+	let back = 2;
 	let update = await getUpdate(back);// # indices to go back, # block returned - 1
 	const saveName = latestBlock + "back" + back + ".json";
 	saveFile(saveName, update);
