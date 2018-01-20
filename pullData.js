@@ -5,6 +5,7 @@ const request = require('async-request'),
 const network = 'mainnet';
 let latestBlock = 0;
 
+
 const getInfuraURL = ({ network, req }) => {
   const { method, params } = req;
   const paramsString = encodeURIComponent(JSON.stringify(params));
