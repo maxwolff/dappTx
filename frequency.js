@@ -1,5 +1,5 @@
 const { Pool } = require('pg')
-
+const fs = require('fs');
 const env = {
   user: 'postgres',
   host: 'localhost',
@@ -67,11 +67,25 @@ async function getContractFrequency(contractID,timeStart){
 	return frequencies
 }
 
+
+const saveFile = (fileName, data) => { // duplicated func from pull data, got to clean this up and throw it in a util.js
+	fs.writeFile(fileName, JSON.stringify(data,null), (err) => {
+		if(err) {
+			throw err;
+		}
+	});
+	console.log("printed to ", fileName);
+}
+
+
 async function main(){
-	var id = '.' //etherdelta_2 contract address https://etherscan.io/address/0x8d12a197cb00d4747a1fe03395095ce2a5cc6819
+	var id = '0x8d12a197cb00d4747a1fe03395095ce2a5cc6819' //etherdelta_2 contract address https://etherscan.io/address/0x8d12a197cb00d4747a1fe03395095ce2a5cc6819
 	var start = 1514764800 // start time 
 	var result = await getContractFrequency(id, start)
 	console.log(result)
+	console.log('here')
+	var fileName = "exampleFrequencies.json"
+	saveFile(fileName, result)
 }
 
 main()
