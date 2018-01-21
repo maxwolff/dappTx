@@ -1,1 +1,0 @@
-SELECT * FROM transactions WHERE blob ->> 'to' = '0xd6a062cae6123c158768a5c444ca0896cc60d6b1';
