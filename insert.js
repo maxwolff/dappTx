@@ -3,10 +3,10 @@ const { Pool } = require('pg')
 module.exports = insert;
 
 const env = {
-  user: 'postgres',
-  host: 'localhost',
-  database: 'tx',
-  password: null,
+  user: 'maxwolff',
+  host: 'tx1.cfjwnlpute0x.us-east-1.rds.amazonaws.com',
+  database: 'tx1',
+  password: 'A3jamaican',
   port: 5432,
 }
 

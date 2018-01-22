@@ -1,10 +1,16 @@
 const request = require('async-request'),
-      insert = require('./insert.js'),
-      fs = require('fs');
-
+     	fs = require('fs'),
+		{ Pool } = require('pg');
 const network = 'mainnet';
 let latestBlock = 0;
 
+var env = {
+  user: 'postgres',
+  host: 'localhost',
+  database: 'tx',
+  password: null,
+  port: 5432,
+}
 
 const getInfuraURL = ({ network, req }) => {
   const { method, params } = req;
@@ -42,7 +48,7 @@ const getBlockNumber = async blockNum => {
 	return JSON.parse(result.body).result;
 }
 
-const getBlockByNumber = async number => {
+async function getBlockByNumber(number) {
 	const blockNum = '0x' + number.toString(16); // convert to hex
 	const req = {
 		method: 'eth_getBlockByNumber',
@@ -73,19 +79,31 @@ const saveFile = (fileName, data) => {
 	console.log("printed to ", fileName);
 }
 
+async function insert(data,pool){
+
+	try {
+		const text = 'INSERT INTO transactions(blob) VALUES($1) RETURNING *'
+		const values = [data]
+	 	const res = await pool.query(text, values)
+	 	console.log('insert', res.rows[0])
+	} catch(err) {
+	  console.log(err.stack)
+	}
+}``
+
 const getData = async blockNum => {
 	let result = [];
-	let block = await(getBlockByNumber(blockNum));
+	let block = await getBlockByNumber(blockNum);
 	const transactions = block["transactions"];
 	const timestamp = block["timestamp"];
-
-  transactions.forEach(transaction => {
-    let info = transaction;
+	const pool = new Pool()
+  	transactions.forEach(transaction => {
+	    let info = transaction;
 		info["timestamp"] = timestamp;
 		info["blockNumber"] = blockNum;
-		insert(info); // inserts into postgres DB . from insert.js
+		insert(info,pool); // inserts into postgres DB 
 		result.push(info);
-  });
+  	});
 	return result;
 }
 
