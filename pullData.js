@@ -79,7 +79,7 @@ const saveFile = (fileName, data) => {
 	console.log("printed to ", fileName);
 }
 
-async function insert(data,pool){
+async function insert(data,pool){// inserts into postgres DB 
 
 	try {
 		const text = 'INSERT INTO transactions(blob) VALUES($1) RETURNING *'
@@ -101,7 +101,7 @@ const getData = async blockNum => {
 	    let info = transaction;
 		info["timestamp"] = timestamp;
 		info["blockNumber"] = blockNum;
-		insert(info,pool); // inserts into postgres DB 
+		insert(info,pool); 
 		result.push(info);
   	});
 	return result;
