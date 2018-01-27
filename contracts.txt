@@ -1,0 +1,18 @@
+{
+"etherdelta":"0x8d12a197cb00d4747a1fe03395095ce2a5cc6819",
+
+"cargo crowdsale": "0x6267b5376c809445c9432bd9f14a3808b00eae2c",
+"binance": "0x3f5ce5fbfe3e9af3971dd833d26ba9b5c936f0be",
+"restart energy crowdsale": "0xa94c2707e233e5d63f46011a4a158cd2452d1d86",
+"eos (dstoken)" : "0x86fa049857e0209aa7d9e616f7eb3b3b78ecfdb0",
+
+"bittrex": "0xa3c1e324ca1ce40db73ed6026c4a177f099b5770",
+
+"idex 1": "0x2a0c0dbecc7e4d658f48e01e3fa353f44050c208",
+0xffc4cdbe28b56454639a47e53d0135df623a7b2f		0.81
+0x4f01001cf69785d4c37f03fd87398849411ccbba		0.71
+0x390de26d772d2e2005c6d1d24afc902bae37a4bb		0.66
+}
+
+https://ethgasstation.info/
+
