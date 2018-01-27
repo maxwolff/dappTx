@@ -15,6 +15,7 @@
     "etherscan-api": "^4.0.0",
     "express": "^4.16.2",
     "pg": "^7.4.1",
+    "scrypt": "^6.0.3",
     "simple-get": "^2.7.0",
     "sleep": "^5.1.1"
   },

@@ -2,15 +2,8 @@ const request = require('async-request'),
      	fs = require('fs'),
 		{ Pool } = require('pg');
 const network = 'mainnet';
-let latestBlock = 0;
-
-var env = {
-  user: 'postgres',
-  host: 'localhost',
-  database: 'tx',
-  password: null,
-  port: 5432,
-}
+var argv = require('minimist')(process.argv.slice(2));
+const pool = new Pool()
 
 const getInfuraURL = ({ network, req }) => {
   const { method, params } = req;
@@ -21,7 +14,7 @@ const getInfuraURL = ({ network, req }) => {
 
 const get = async url => {
 	try {
-		result = await request(url);
+		const result = await request(url);
 		return result;
 	} catch (e) {
 		throw e;
@@ -54,10 +47,12 @@ async function getBlockByNumber(number) {
 		method: 'eth_getBlockByNumber',
 		params: [blockNum, true]
 	};
-	const target = getInfuraURL({network,req});
+	let target = getInfuraURL({network,req});
 	console.log(target);
-	const result = await get(target);
-	return JSON.parse(result.body).result;
+	let result = await get(target);
+	let transactions = JSON.parse(result.body).result["transactions"]
+	console.log("first result", transactions[0])
+	return transactions;
 }
 
 const getTxByBlockNumberAndIndex = async (blockNum, index) => {
@@ -85,18 +80,18 @@ async function insert(data,pool){// inserts into postgres DB
 		const text = 'INSERT INTO transactions(blob) VALUES($1) RETURNING *'
 		const values = [data]
 	 	const res = await pool.query(text, values)
-	 	console.log('insert', res.rows[0])
+	 	//console.log('insert', res.rows[0])
 	} catch(err) {
 	  console.log(err.stack)
 	}
-}``
+}
 
-const getData = async blockNum => {
+const getData = async (blockNum) => {
 	let result = [];
-	let block = await getBlockByNumber(blockNum);
-	const transactions = block["transactions"];
-	const timestamp = block["timestamp"];
-	const pool = new Pool()
+	const transactions = await getBlockByNumber(blockNum)
+	console.log('gotBlock')
+	const timestamp = transactions["timestamp"];
+	//const pool = new Pool()
   	transactions.forEach(transaction => {
 	    let info = transaction;
 		info["timestamp"] = timestamp;
@@ -108,21 +103,40 @@ const getData = async blockNum => {
 }
 
 // grab last X block data
-const getUpdate = async range => {
+const getHistoricalData = async (sampleRate,back,latestBlock) => {
 	let result = [];
-	latestBlock = await getBlockNumber('latest');
-	for(let i = 0; j = range, i < j; i++) {
+	for(let i = 0; i < back; i+=sampleRate) {
+		console.log('req block number', latestBlock -i )
 		let data = await getData(latestBlock - i);
-		result.push(data);
+	//	result.push(data);
 	}
-	return result;
+	//  return result
 }
 
+
 const main = async() => {
-	let back = 2;
-	let update = await getUpdate(back);// # indices to go back, # block returned - 1
-	const saveName = latestBlock + "back" + back + ".json";
-	saveFile(saveName, update);
+	let sampleRate =  argv["r"]; 
+	let back = argv["b"]; 
+	let poll = argv["p"];
+	let latestBlock = await getBlockNumber('latest');
+	latestBlock -= 5; // latest block isnt available, give INFURA a 5 block buffer
+	if (poll){ // get 1 block, continuous polling
+		let data = await getData(latestBlock);
+	}
+	else { // grab all historical data
+		let update = await getHistoricalData(sampleRate,back,latestBlock);// # indices to go back, # block returned - 1
+	}
+	//const saveName = parseInt(latestBlock,16) + ".json";
+	//saveFile(saveName, update);
 }
 
 main()
+
+
+
+// go back PGUSER='postgres' PGDATABASE='tx' PGPORT=5432 node pullData.js -r 30 -b 400 (sample every 30th block for the last 400 blocks)
+// for cronjob : PGUSER='postgres' PGDATABASE='tx' PGPORT=5432 node pullData.js -p
+
+
+
+
