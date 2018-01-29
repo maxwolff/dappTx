@@ -12,7 +12,7 @@ async function getUniqueTimestamps(hexStart,pool){
 	 	for (i in res.rows){
 	 		stamps.push(res.rows[i]['time'])
 	 	}
-	}catch(err) {
+	}catch(err){
 	  console.log(err.stack)
 	}
 	return stamps
@@ -45,6 +45,7 @@ async function getContractOccurence(stamp, contractID,pool){
 }
 
 async function getContractFrequency(contractID,timeStart){
+	console.log(contractID,timeStart)
 	var hexStart = '0x' + timeStart.toString(16);
 	var frequencies = [];
 	const pool = new Pool()
