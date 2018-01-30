@@ -10,7 +10,7 @@ that queries the DB, formats it properly for the front-end, which displays graph
 * server.js: entry point for frontend 
 
 # get started
-- npm install
+- npm i
 - sudo -u postgres createdb tx
 - psql -U postgres -d tx -f sql/makeTable.sql
 - PGUSER='postgres' PGDATABASE='tx' PGPORT=5432 node pullData.js
