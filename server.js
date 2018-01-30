@@ -1,7 +1,8 @@
+
 var express = require('express'),
   app = express()
   //port = process.env.PORT || 3000;
-const PORT = process.env.PORT || 5000
+const PORT = process.env.PORT || 5000 //react is 8000
 
 app.use(express.static('public'));
 
@@ -10,6 +11,7 @@ var query = require('./frequency.js');
 
 /* const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: true })); */
+
 
  
 async function getData(req,res){
@@ -35,10 +37,3 @@ app.listen(PORT, function () {
   console.log(`Listening on ${ PORT }`)
 })
 
-
-/*
-example params:   
-var id = '0x8d12a197cb00d4747a1fe03395095ce2a5cc6819' // "etherdelta_2" https://etherscan.io/address/0x8d12a197cb00d4747a1fe03395095ce2a5cc6819
-var start = 1514764800 // start time
-
-*/
