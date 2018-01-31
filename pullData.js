@@ -4,6 +4,7 @@ const request = require('async-request'),
 const network = 'mainnet';
 let argv = require('minimist')(process.argv.slice(2));
 const pool = new Pool();
+require('dotenv').config()
 
 const getInfuraURL = ({network, req}) => {
   const {method, params} = req;
@@ -93,7 +94,8 @@ const getData = async (blockNum) => {
 		info["timestamp"] = timestamp;
 		info["blockNumber"] = blockNum;
 		insert(info); 
-		result.push(info);
+		console.log("inserted tx from blockNum: ", blockNum)
+
   	});
 	return result;
 }
