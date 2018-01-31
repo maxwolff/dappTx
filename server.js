@@ -1,16 +1,14 @@
 
-var express = require('express'),
-  app = express()
-  //port = process.env.PORT || 3000;
-const PORT = process.env.PORT || 5000 //react is 8000
-
-app.use(express.static('public'));
-
-app.set('view engine', 'ejs')
-var query = require('./frequency.js');
 
 /* const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: true })); */
+//let default_server_port = 8000 // react is 8000
+let express = require('express'),
+  app = express(),
+  port = process.env.PORT || 5000; // heroku is 5000
+app.use(express.static('public'));
+
+let query = require('./frequency.js');
 
 
  
@@ -33,7 +31,7 @@ app.get('/api', function (req, res) {
   res.send("'/api/:contractID/:startTime'")//test fucntion
 })
 
-app.listen(PORT, function () {
-  console.log(`Listening on ${ PORT }`)
+app.listen(port, function () {
+  console.log(`Listening on ${port}`)
 })
 
