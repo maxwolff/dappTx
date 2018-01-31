@@ -1,7 +1,8 @@
 # dappTx
 
+hosted at: https://git.heroku.com/shrouded-journey-22394
 format: /api/:contractID/:startTime/:endTime
-usage: http://localhost:5000/api/0x8d12a197cb00d4747a1fe03395095ce2a5cc6819/0x59bcb6cb/0x59c19f03
+usage: https://git.heroku.com/shrouded-journey-22394/api/0x8d12a197cb00d4747a1fe03395095ce2a5cc6819/0x59bcb6cb/0x59c19f03
 
 
 
