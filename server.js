@@ -7,14 +7,15 @@ let express = require('express'),
   app = express(),
   port = process.env.PORT || 5000; // heroku is 5000
 app.use(express.static('public'));
+require('dotenv').config()
+
 
 let query = require('./frequency.js');
 
 
  
 async function getData(req,res){
-	var result = await query.getFreq(req.params['contractID'], req.params['startTime']) // get frequencies for all blocks after this start time
-	//res.send(result)
+	var result = await query.getFreq(req.params['contractID'], req.params['startTime'],req.params['endTime']) 
   res.send(result)
 }
 
