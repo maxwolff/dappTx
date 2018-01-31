@@ -11,7 +11,8 @@
     "pg": "^7.4.1",
     "scrypt": "^6.0.3",
     "simple-get": "^2.7.0",
-    "sleep": "^5.1.1"
+    "sleep": "^5.1.1",
+    "dotenv": "^1.0.0"
   },
   "devDependencies": {
     "mocha": "^5.0.0"
