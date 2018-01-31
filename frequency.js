@@ -4,10 +4,11 @@ const fs = require('fs');
 module.exports.getFreq = getContractFrequency;
 
 //returns unique timestamps we have data for since a certain timestmap
-async function getUniqueTimestamps(hexStart,pool){ 
+async function getUniqueTimestamps(hexStart,hexEnd,pool){ 
 	var stamps = [];
 	try {
-		const stampQuery = "SELECT DISTINCT (blob ->> 'timestamp') AS time FROM transactions WHERE blob ->> 'timestamp' > '" + hexStart + "';"
+		const stampQuery = "SELECT DISTINCT (blob ->> 'timestamp') AS time FROM transactions WHERE blob ->> 'timestamp' > '" + hexStart + "'AND blob ->>  'timestamp' < '" + hexEnd + "';"
+	 	console.log(stampQuery)
 	 	const res = await pool.query(stampQuery)
 	 	for (i in res.rows){
 	 		stamps.push(res.rows[i]['time'])
@@ -44,16 +45,14 @@ async function getContractOccurence(stamp, contractID,pool){
 	return contractOccurence
 }
 
-async function getContractFrequency(contractID,timeStart){
-	console.log(contractID,timeStart)
-	var hexStart = '0x' + timeStart.toString(16);
+async function getContractFrequency(contractID,timeStart, timeEnd){
 	var frequencies = [];
 	const pool = new Pool()
-	var stamps = await getUniqueTimestamps(hexStart,pool)
+	var stamps = await getUniqueTimestamps(timeStart, timeEnd,pool)
 	for (i in stamps){
 		var total = await getTxCount(stamps[i],pool)
 		var contractFreq = await getContractOccurence(stamps[i], contractID,pool)
-		var resultArr = {'timestamp': stamps[i],'totalTransactions':total, 'contractFreq': contractFreq}
+		var resultArr = {'timestamp': stamps[i],'totalEthTx':total, 'contractTx': contractFreq}
 		frequencies.push(resultArr)
 	}
 	return frequencies
@@ -68,19 +67,6 @@ const saveFile = (fileName, data) => { // duplicated func from pull data, got to
 	});
 	console.log("printed to ", fileName);
 }
-
-
-/*async function main(){ // example invocation
-	var id = '0x8d12a197cb00d4747a1fe03395095ce2a5cc6819' //etherdelta_2 contract address https://etherscan.io/address/0x8d12a197cb00d4747a1fe03395095ce2a5cc6819
-	var start = 1514764800 // start time 
-	var result = await getContractFrequency(id, start)
-	console.log(result)
-	console.log('here')
-	var fileName = "exampleFrequencies.json"
-	saveFile(fileName, result)
-} */
-
-
 
 
 

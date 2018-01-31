@@ -20,7 +20,7 @@ async function getData(req,res){
 }
 
 
-app.get('/api/:contractID/:startTime', function (req, res) {
+app.get('/api/:contractID/:startTime/:endTime', function (req, res) {
   getData(req,res)
 })
 
@@ -29,7 +29,7 @@ app.get('/', function (req, res) {
 })
 
 app.get('/api', function (req, res) {
-  res.send("'/api/:contractID/:startTime'")//test fucntion
+  res.send("'/api/:contractID/:startTime/:endTime' all hex")//test fucntion
 })
 
 app.listen(port, function () {

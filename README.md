@@ -1,4 +1,10 @@
 # dappTx
+
+format: /api/:contractID/:startTime/:endTime
+usage: http://localhost:5000/api/0x8d12a197cb00d4747a1fe03395095ce2a5cc6819/0x59bcb6cb/0x59c19f03
+
+
+
 Visualizes transaction volume of biggest ethereum smart contracts. Pulls data from 
 Infura, puts it in a postgres DB, (eventually a cron job). Exposed via a webapp 
 that queries the DB, formats it properly for the front-end, which displays graphs. 
