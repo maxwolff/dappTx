@@ -1,10 +1,8 @@
 # dappTx
 
-hosted at: https://git.heroku.com/shrouded-journey-22394
-format: /api/:contractID/:startTime/:endTime
-usage: https://git.heroku.com/shrouded-journey-22394/api/0x8d12a197cb00d4747a1fe03395095ce2a5cc6819/0x59bcb6cb/0x59c19f03
-
-
+hosted at: https://shrouded-journey-22394.herokuapp.com
+format: /api/:contractID/:startTime/:endTime (all three are in hex, grab these from etherscan)
+usage: https://shrouded-journey-22394.herokuapp.com/api/0x8d12a197cb00d4747a1fe03395095ce2a5cc6819/0x59bcb6cb/0x59c19f03
 
 Visualizes transaction volume of biggest ethereum smart contracts. Pulls data from 
 Infura, puts it in a postgres DB, (eventually a cron job). Exposed via a webapp 
