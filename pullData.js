@@ -1,10 +1,11 @@
+require('dotenv').config()
 const request = require('async-request'),
   fs = require('fs'),
-  {Pool} = require('pg');
-const network = 'mainnet';
+  {Pool} = require('pg'),
+   network = 'mainnet';
 let argv = require('minimist')(process.argv.slice(2));
 const pool = new Pool();
-require('dotenv').config()
+
 
 const getInfuraURL = ({network, req}) => {
   const {method, params} = req;
@@ -20,17 +21,7 @@ const get = async url => {
   }
 };
 
-const getTxCount = async blockNum => {
-  const req = {
-    method: 'eth_getBlockTransactionCountByNumber',
-    params: [blockNum]
-  };
-  const target = getInfuraURL({network, req});
-  const result = await get(target);
-  return JSON.parse(result.body).result;
-};
-
-const getBlockNumber = async blockNum => {
+const getBlockNumber = async (blockNum) => {
   const req = {
     method: 'eth_blockNumber',
     params: [blockNum]
@@ -40,30 +31,18 @@ const getBlockNumber = async blockNum => {
   return JSON.parse(result.body).result;
 };
 
-async function getBlockByNumber(number) {
+const getBlockByNumber = async (number) => {
   const blockNum = '0x' + number.toString(16); // convert to hex
   const req = {
     method: 'eth_getBlockByNumber',
     params: [blockNum, true]
-  };
+  }
 
   let target = getInfuraURL({network, req});
   console.log(target);
   let result = await get(target);
-  let transactions = JSON.parse(result.body).result["transactions"];
-  console.log("first result", transactions[0]);
-  return transactions;
+  return JSON.parse(result.body).result
 }
-
-const getTxByBlockNumberAndIndex = async (blockNum, index) => {
-  const req = {
-    method: 'eth_getTransactionByBlockNumberAndIndex',
-    params: [blockNum, index]
-  };
-  const target = getInfuraURL({network, req});
-  const result = await get(target);
-  return JSON.parse(result.body).result;
-};
 
 const saveFile = (fileName, data) => {
   fs.writeFile(fileName, JSON.stringify(data, null), (err) => {
@@ -74,7 +53,7 @@ const saveFile = (fileName, data) => {
   console.log("printed to ", fileName);
 };
 
-async function insert(data) {// inserts into postgres DB
+const insert = async (data) => {   // inserts into postgres DB
   try {
     const text = 'INSERT INTO transactions(blob) VALUES($1) RETURNING *'
     const values = [data];
@@ -86,31 +65,25 @@ async function insert(data) {// inserts into postgres DB
 }
 
 const getData = async (blockNum) => {
-
 	const block = await getBlockByNumber(blockNum)
 	const timestamp = block["timestamp"];
-  	block.forEach(transaction => {
+	const transactions = block["transactions"]
+  	transactions.forEach(transaction => {
 	    let info = transaction;
 		info["timestamp"] = timestamp;
 		info["blockNumber"] = blockNum;
+		console.log(info)
 		insert(info); 
 		console.log("inserted tx from blockNum: ", blockNum)
-
   	});
-	return result;
 }
 
-// grab last X block data
+// grab last X blocks data
 const getHistoricalData = async (sampleRate,back,latestBlock) => {
-	let result = [];
 	for(let i = 0; i < back; i+=sampleRate) {
-		console.log('req block number', latestBlock -i )
-		let data = await getData(latestBlock - i);
-	//	result.push(data);
+		getData(latestBlock - i);
 	}
-	//  return result
 }
-
 
 const main = async() => {
 	let sampleRate =  argv["r"]; 
@@ -119,42 +92,14 @@ const main = async() => {
 	let latestBlock = await getBlockNumber('latest');
 	latestBlock -= 5; // latest block isnt available, give INFURA a 5 block buffer
 	if (poll){ // get 1 block, continuous polling
-		let data = await getData(latestBlock);
+		getData(latestBlock);
 	}
 	else { // grab all historical data
-		let update = await getHistoricalData(sampleRate,back,latestBlock);// # indices to go back, # block returned - 1
+		getHistoricalData(sampleRate,back,latestBlock);// # indices to go back, # block returned - 1
 	}
-	//const saveName = parseInt(latestBlock,16) + ".json";
-	//saveFile(saveName, update);
 }
 
 main()
-
-
-
-// go back PGUSER='postgres' PGDATABASE='tx' PGPORT=5432 node pullData.js -r 30 -b 400 (sample every 30th block for the last 400 blocks)
-// for cronjob : PGUSER='postgres' PGDATABASE='tx' PGPORT=5432 node pullData.js -p
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
