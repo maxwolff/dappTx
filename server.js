@@ -16,7 +16,7 @@ app.get('/api/:contractID/:startTime/:endTime', function (req, res) {
 })
 
 app.get('/', function (req, res) {
-  res.send("'/api/:contractID/:startTime/:endTime' , all three in hex")//test fucntion
+  res.sendFile(__dirname + '/index.html')//test fucntion
 })
 
 app.listen(PORT, function () {
