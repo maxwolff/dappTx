@@ -4,10 +4,10 @@ let express = require('express'),
 const PORT = process.env.PORT || 5000
 app.use(express.static('public'));
 
-let query = require('./frequency.js');
+let freq = require('./frequency.js');
 
 async function getData(req,res){
-	var result = await query.getFreq(req.params['contractID'], req.params['startTime'],req.params['endTime']) 
+	var result = await freq.main(req.params['contractID'], req.params['startTime'],req.params['endTime']) 
   res.send(result)
 }
 

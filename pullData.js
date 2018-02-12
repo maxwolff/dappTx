@@ -1,16 +1,26 @@
 require('dotenv').config()
+let argv = require('minimist')(process.argv.slice(2));
+
+let util = require('./util.js');
+
 const request = require('async-request'),
   fs = require('fs'),
   {Pool} = require('pg'),
-   network = 'mainnet';
-let argv = require('minimist')(process.argv.slice(2));
-const pool = new Pool();
+  pool = new Pool(),
+  network = 'mainnet';
 
+async function get(url) {
+  try {
+    return await request(url);
+  } catch (e) {
+    throw e;
+  }
+};
 
 const getInfuraURL = ({network, req}) => {
-  const {method, params} = req;
-  const paramsString = encodeURIComponent(JSON.stringify(params));
-  return `https://api.infura.io/v1/jsonrpc/${network}/${method}?params=${paramsString}`;
+    const {method, params} = req;
+    const paramsString = encodeURIComponent(JSON.stringify(params));
+    return `https://api.infura.io/v1/jsonrpc/${network}/${method}?params=${paramsString}`;
 };
 
 const get = async url => {
@@ -68,14 +78,14 @@ const getData = async (blockNum) => {
 	const block = await getBlockByNumber(blockNum)
 	const timestamp = block["timestamp"];
 	const transactions = block["transactions"]
-  	transactions.forEach(transaction => {
-	    let info = transaction;
-		info["timestamp"] = timestamp;
-		info["blockNumber"] = blockNum;
-		console.log(info)
-		insert(info); 
-		console.log("inserted tx from blockNum: ", blockNum)
-  	});
+    transactions.forEach(transaction => {
+        let info = transaction;
+        info["timestamp"] = timestamp;
+        info["blockNumber"] = blockNum;
+        console.log(info)
+        insert(info); 
+        console.log("inserted tx from blockNum: ", blockNum)
+    });
 }
 
 // grab last X blocks data
