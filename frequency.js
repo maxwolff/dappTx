@@ -1,14 +1,31 @@
 const { Pool } = require('pg')
 const fs = require('fs');
+const abiDecoder = require('abi-decoder');
+const request = require('async-request');
 
-module.exports.getFreq = getContractFrequency;
+let util = require('./util.js');
+
+async function get(url) {
+  try {
+    return await request(url);
+  } catch (e) {
+    throw e;
+  }
+};
+
+
+const timestampToDate = (timestamp) => {
+	var decimalTimestamp = parseInt(timestamp)
+	var dateObj = new Date(decimalTimestamp*1000);
+	var formattedDate = dateObj.toLocaleString().split(' ')[0];
+	return formattedDate
+}
 
 //returns unique timestamps we have data for since a certain timestmap
 async function getUniqueTimestamps(hexStart,hexEnd,pool){ 
 	var stamps = [];
 	try {
 		const stampQuery = "SELECT DISTINCT (blob ->> 'timestamp') AS time FROM transactions WHERE blob ->> 'timestamp' > '" + hexStart + "'AND blob ->>  'timestamp' < '" + hexEnd + "';"
-	 	console.log(stampQuery)
 	 	const res = await pool.query(stampQuery)
 	 	for (i in res.rows){
 	 		stamps.push(res.rows[i]['time'])
@@ -45,30 +62,101 @@ async function getContractOccurence(stamp, contractID,pool){
 	return contractOccurence
 }
 
-async function getContractFrequency(contractID,timeStart, timeEnd){
-	var frequencies = [];
+const getAbiDecoder = async (contractID) => {
+    var url = 'http://api.etherscan.io/api?module=contract&action=getabi&address=' + contractID
+    var data = await get(url)
+    var body = JSON.parse(data.body)
+    if (body.message == 'OK'){
+	    var contractABI = (JSON.parse(body.result));
+	    abiDecoder.addABI(contractABI);
+	    return abiDecoder
+    }else{
+    	return false
+    }
+}
+
+const decodeInput = async (abiDecoder, input) => {
+    return abiDecoder.decodeMethod(input);
+}
+
+const getContractTransactions = async (stamp, contractID,pool) => { 
+	var arr = [];
+	try {
+		const inputQuery = "SELECT * FROM transactions WHERE blob ->> 'to' = '" + contractID + "' AND blob ->> 'timestamp' = '" + stamp + "';"
+		//blob ->> 'timestamp' = '" + stamp + "' AND 
+	 	const res = await pool.query(inputQuery)
+	 	for (i in res.rows){
+	 		var data = res.rows[i]['blob']
+	 		arr.push(data)
+	 	}
+	 	return arr;
+	}catch(err) {
+	  console.log(err.stack)
+	}
+}
+
+
+const getContractFrequencyByStamp = async (contractID,timeStart, timeEnd) => { // entry point
+	var contractID = contractID.toLowerCase()
+	var abiDecoder = await getAbiDecoder(contractID)
 	const pool = new Pool()
 	var stamps = await getUniqueTimestamps(timeStart, timeEnd,pool)
-	for (i in stamps){
-		var total = await getTxCount(stamps[i],pool)
-		var contractFreq = await getContractOccurence(stamps[i], contractID,pool)
-		var resultArr = {'timestamp': stamps[i],'totalEthTx':total, 'contractTx': contractFreq}
-		frequencies.push(resultArr)
+	var result = []; 
+	for (i in stamps){ // iterates over timestamps in our time constraint
+		var stamp = stamps[i]
+		var date = await timestampToDate(stamp)
+		var total = await getTxCount(stamp,pool); 
+		var transactions = await getContractTransactions(stamp, contractID,pool) // get all transactions with our contract
+		var functionFreq = {};
+		transactions.forEach(tx => {
+			var method = abiDecoder.decodeMethod(tx['input'])
+			functionFreq[method.name] = 1 + (functionFreq[method.name] || 0);
+		});
+		var contractTxCount = transactions.length
+		var resultObj = {}
+		resultObj = {'timestamp': stamp, 'date':date, 'sampledEthTx': parseInt(total), 'contractTx': contractTxCount, 'functions': functionFreq}
+		result.push(resultObj)
 	}
-	return frequencies
+	return result
 }
 
+const splitDays = async (samples) =>{
+	var results = {}
+	console.log(samples)
+	samples.forEach(sample =>{
+		var sampleDate = sample['date']
+		if (results[sampleDate]){
+			var curr = results[sampleDate]
+			curr['sampledEthTx'] = sample['sampledEthTx'] + curr['sampledEthTx']
+			curr['contractTx'] = sample['contractTx'] + curr['contractTx']
+			curr['functions'] = util.sumObjectsByKey(sample['functions'], curr['functions'])
 
-const saveFile = (fileName, data) => { // duplicated func from pull data, got to clean this up and throw it in a util.js
-	fs.writeFile(fileName, JSON.stringify(data,null), (err) => {
-		if(err) {
-			throw err;
+		}else{
+			results[sampleDate]= {};
+			var curr = results[sampleDate]
+			curr['sampledEthTx'] = sample['sampledEthTx']
+			curr['contractTx'] = sample['contractTx']
+			curr['functions'] = sample['functions']
 		}
 	});
-	console.log("printed to ", fileName);
+	return results
+}
+const main = async (contractID,timeStart, timeEnd) =>{
+	const frequencies = await getContractFrequencyByStamp(contractID,timeStart,timeEnd)
+	var result = await splitDays(frequencies)
+	console.log(result)
+	return result
 }
 
+main( '0x8d12a197cb00d4747a1fe03395095ce2a5cc6819', '0x5a6fc956','0x5a7e7918')
+			   
 
+
+// http://localhost:5000/api/0x8d12a197cb00d4747a1fe03395095ce2a5cc6819/0x59bcb6cb/0x59d19f03
+// http://localhost:5000/api/0x8d12a197cb00d4747a1fe03395095ce2a5cc6819/0x5a6fc956/0x5a7e7918
+
+
+module.exports.main = main;
 
 
 
