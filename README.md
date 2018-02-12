@@ -1,13 +1,23 @@
 # dappTx
 
-
-Visualizes transaction volume of biggest ethereum smart contracts. Pulls data from 
-Infura, puts it in a postgres DB, (eventually a cron job). Exposed via a webapp 
-that queries the DB, formats it properly for the front-end, which displays graphs. 
+Shows volume of biggest ethereum smart contracts by function name. Pulls data from 
+Infura, puts it in a postgres DB. Exposed via a webapp that queries the DB. Building front-end. 
 
 * hosted at: https://shrouded-journey-22394.herokuapp.com
 * format: /api/:contractID/:startTime/:endTime (all three are in hex, grab these from etherscan)
-* usage: https://shrouded-journey-22394.herokuapp.com/api/0x8d12a197cb00d4747a1fe03395095ce2a5cc6819/0x59bcb6cb/0x59c19f03
+* usage: https://shrouded-journey-22394.herokuapp.com/api/0x8d12a197cb00d4747a1fe03395095ce2a5cc6819/0x5a6fc956/0x5a7e7918
+
+example response: 
+>"2018-1-29": {
+>    "sampledEthTx": 388,
+>    "contractTx": 13,
+>    "functions": {
+>      "withdraw": 3,
+>      "deposit": 2,
+>      "withdrawToken": 3,
+>      "trade": 5
+>    }
+>  }
 
 # important files
 
@@ -20,7 +30,7 @@ that queries the DB, formats it properly for the front-end, which displays graph
 - npm install
 - sudo -u postgres createdb tx
 - psql -U postgres -d tx -f sql/makeTable.sql
-- PGUSER='postgres' PGDATABASE='tx' PGPORT=5432 node pullData.js
+- PGUSER='postgres' PGDATABASE='tx' PGPORT=5432 node pullData.js -p 1
 - PGUSER='postgres' PGDATABASE='tx' PGPORT=5432 node server.js
 
 # next
