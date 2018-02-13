@@ -92,6 +92,7 @@ const getContractTransactions = async (stamp, contractID,pool) => {
 	 	return arr;
 	}catch(err) {
 	  console.log(err.stack)
+	  return false 
 	}
 }
 
@@ -108,26 +109,28 @@ const getContractFrequencyByStamp = async (contractID,timeStart, timeEnd) => { /
 		var total = await getTxCount(stamp,pool); 
 		var transactions = await getContractTransactions(stamp, contractID,pool) // get all transactions with our contract
 		var functionFreq = {};
-		console.log(typeof transactions)
-		if (transactions){
-			transactions.forEach(tx => {
-				var method = abiDecoder.decodeMethod(tx['input'])
-				if (method.name){
-					functionFreq[method.name] = 1 + (functionFreq[method.name] || 0);
-				}	
-			});
+		try{
+				transactions.forEach(tx => {
+					var method = abiDecoder.decodeMethod(tx['input'])
+					if (method.name){
+						functionFreq[method.name] = 1 + (functionFreq[method.name] || 0);
+					}	
+				});
+				var contractTxCount = transactions.length
+			var resultObj = {}
+			resultObj = {'timestamp': stamp, 'date':date, 'sampledEthTx': parseInt(total), 'contractTx': contractTxCount, 'functions': functionFreq}
+			result.push(resultObj)
+			console.log('added', stamp)
+		}catch(err){
+			console.log(err.stack)	
 		}
-		var contractTxCount = transactions.length
-		var resultObj = {}
-		resultObj = {'timestamp': stamp, 'date':date, 'sampledEthTx': parseInt(total), 'contractTx': contractTxCount, 'functions': functionFreq}
-		result.push(resultObj)
 	}
 	return result
 }
 
 const splitDays = async (samples) =>{
 	var results = {}
-	console.log(samples)
+	//console.log(samples)
 	samples.forEach(sample =>{
 		var sampleDate = sample['date']
 		if (results[sampleDate]){
@@ -149,11 +152,11 @@ const splitDays = async (samples) =>{
 const main = async (contractID,timeStart, timeEnd) =>{
 	const frequencies = await getContractFrequencyByStamp(contractID,timeStart,timeEnd)
 	var result = await splitDays(frequencies)
-	console.log(result)
+	//console.log(result)
 	return result
 }
 
-main( '0x8d12a197cb00d4747a1fe03395095ce2a5cc6819', '0x5a6fc956','0x5a7e7918')
+//main( '0x8d12a197cb00d4747a1fe03395095ce2a5cc6819', '0x5a6fc956','0x5a7e7918')
 			   
 
 
