@@ -23,14 +23,6 @@ const getInfuraURL = ({network, req}) => {
     return `https://api.infura.io/v1/jsonrpc/${network}/${method}?params=${paramsString}`;
 };
 
-const get = async url => {
-  try {
-    return await request(url);
-  } catch (e) {
-    throw e;
-  }
-};
-
 const getBlockNumber = async (blockNum) => {
   const req = {
     method: 'eth_blockNumber',
