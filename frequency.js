@@ -108,17 +108,18 @@ const getContractFrequencyByStamp = async (contractID,timeStart, timeEnd) => { /
 		var total = await getTxCount(stamp,pool); 
 		var transactions = await getContractTransactions(stamp, contractID,pool) // get all transactions with our contract
 		var functionFreq = {};
-		transactions.forEach(tx => {
-			try{
+		
+		try{
+			transactions.forEach(tx => {
 				var method = abiDecoder.decodeMethod(tx['input'])
 				if (method.name){
 					functionFreq[method.name] = 1 + (functionFreq[method.name] || 0);
 				}	
-			}
-			catch (err){
-				console.log(err)
-			}
-		});
+			});
+		}
+		catch (err){
+			console.log(err)
+		}
 		var contractTxCount = transactions.length
 		var resultObj = {}
 		resultObj = {'timestamp': stamp, 'date':date, 'sampledEthTx': parseInt(total), 'contractTx': contractTxCount, 'functions': functionFreq}
