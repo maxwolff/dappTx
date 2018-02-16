@@ -3,32 +3,16 @@ let argv = require('minimist')(process.argv.slice(2));
 
 let util = require('./util.js');
 
-const request = require('async-request'),
-  fs = require('fs'),
+const fs = require('fs'),
   {Pool} = require('pg'),
   pool = new Pool(),
   network = 'mainnet';
 
-async function get(url) {
-  try {
-    return await request(url);
-  } catch (e) {
-    throw e;
-  }
-};
 
 const getInfuraURL = ({network, req}) => {
     const {method, params} = req;
     const paramsString = encodeURIComponent(JSON.stringify(params));
     return `https://api.infura.io/v1/jsonrpc/${network}/${method}?params=${paramsString}`;
-};
-
-const get = async url => {
-  try {
-    return await request(url);
-  } catch (e) {
-    throw e;
-  }
 };
 
 const getBlockNumber = async (blockNum) => {
@@ -37,7 +21,7 @@ const getBlockNumber = async (blockNum) => {
     params: [blockNum]
   };
   const target = getInfuraURL({network, req});
-  const result = await get(target);
+  const result = await util.get(target);
   return JSON.parse(result.body).result;
 };
 
@@ -50,7 +34,7 @@ const getBlockByNumber = async (number) => {
 
   let target = getInfuraURL({network, req});
   console.log(target);
-  let result = await get(target);
+  let result = await util.get(target);
   return JSON.parse(result.body).result
 }
 

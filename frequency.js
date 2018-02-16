@@ -1,18 +1,8 @@
 const { Pool } = require('pg')
 const fs = require('fs');
 const abiDecoder = require('abi-decoder');
-const request = require('async-request');
 
 let util = require('./util.js');
-
-async function get(url) {
-  try {
-    return await request(url);
-  } catch (e) {
-    throw e;
-  }
-};
-
 
 const timestampToDate = (timestamp) => {
 	var decimalTimestamp = parseInt(timestamp)
@@ -21,50 +11,9 @@ const timestampToDate = (timestamp) => {
 	return formattedDate
 }
 
-//returns unique timestamps we have data for since a certain timestmap
-async function getUniqueTimestamps(hexStart,hexEnd,pool){ 
-	var stamps = [];
-	try {
-		const stampQuery = "SELECT DISTINCT (blob ->> 'timestamp') AS time FROM transactions WHERE blob ->> 'timestamp' > '" + hexStart + "'AND blob ->>  'timestamp' < '" + hexEnd + "';"
-	 	const res = await pool.query(stampQuery)
-	 	for (i in res.rows){
-	 		stamps.push(res.rows[i]['time'])
-	 	}
-	}catch(err){
-	  console.log(err.stack)
-	}
-	return stamps
-}
-
-//return tx count at a given timestamp
-async function getTxCount(stamp,pool){ 
-	var totalCount;
-	try {
-		const countQuery = "SELECT COUNT (blob) FROM transactions WHERE blob ->> 'timestamp' = '" + stamp + "';"
-	 	const res = await pool.query(countQuery)
-	 	totalCount = res.rows[0]["count"]
-	}catch(err) {
-	  console.log(err.stack)
-	}
-	return totalCount
-}
-
-async function getContractOccurence(stamp, contractID,pool){ 
-	var contractOccurence;
-	try {
-		const occurenceQuery = "SELECT COUNT (blob) FROM transactions WHERE blob ->> 'to' = '" + contractID + "' AND blob ->> 'timestamp' = '" + stamp + "';"
-		//blob ->> 'timestamp' = '" + stamp + "' AND 
-	 	const res = await pool.query(occurenceQuery)
-	 	contractOccurence = res.rows[0]["count"]
-	}catch(err) {
-	  console.log(err.stack)
-	}
-	return contractOccurence
-}
-
 const getAbiDecoder = async (contractID) => {
     var url = 'http://api.etherscan.io/api?module=contract&action=getabi&address=' + contractID
-    var data = await get(url)
+    var data = await util.get(url)
     var body = JSON.parse(data.body)
     if (body.message == 'OK'){
 	    var contractABI = (JSON.parse(body.result));
@@ -75,18 +24,31 @@ const getAbiDecoder = async (contractID) => {
     }
 }
 
-const decodeInput = async (abiDecoder, input) => {
-    return abiDecoder.decodeMethod(input);
+const getTxNum = async (hexStart,hexEnd,pool) => {
+	var countMap = {};
+	try{
+	    const text =  "SELECT blob ->> 'timestamp' AS timestamp, COUNT(blob ->> 'timestamp') AS count FROM transactions WHERE blob ->> 'timestamp' > $1 AND blob ->>  'timestamp' < $2 GROUP BY blob ->> 'timestamp'"
+	    const values = [hexStart, hexEnd]
+	    const res = await pool.query(text,values)
+	 	for (i in res.rows){
+	 		var data = res.rows[i]
+	 		countMap[data['timestamp']] = data['count']
+	 	}
+	 	return countMap;
+	}catch(err) {
+	  console.log(err.stack)
+	}
 }
 
-const getContractTransactions = async (stamp, contractID,pool) => { 
+
+const getContractMatches = async (hexStart,hexEnd,contractID,pool) => {
 	var arr = [];
-	try {
-		const inputQuery = "SELECT * FROM transactions WHERE blob ->> 'to' = '" + contractID + "' AND blob ->> 'timestamp' = '" + stamp + "';"
-		//blob ->> 'timestamp' = '" + stamp + "' AND 
-	 	const res = await pool.query(inputQuery)
+	try{
+	    const text =  "SELECT blob ->> 'timestamp' AS timestamp, json_agg(blob ->> 'input') AS input, COUNT(blob ->> 'timestamp') AS count FROM transactions WHERE blob ->> 'timestamp' > $1 AND blob ->> 'timestamp' < $2 AND blob ->> 'to' = $3 GROUP BY blob ->> 'timestamp'"
+	    const values = [hexStart, hexEnd, contractID]
+	    const res = await pool.query(text,values)
 	 	for (i in res.rows){
-	 		var data = res.rows[i]['blob']
+	 		var data = res.rows[i]
 	 		arr.push(data)
 	 	}
 	 	return arr;
@@ -96,67 +58,67 @@ const getContractTransactions = async (stamp, contractID,pool) => {
 }
 
 
-const getContractFrequencyByStamp = async (contractID,timeStart, timeEnd) => { // entry point
-	var contractID = contractID.toLowerCase()
-	var abiDecoder = await getAbiDecoder(contractID)
-	const pool = new Pool()
-	var stamps = await getUniqueTimestamps(timeStart, timeEnd,pool)
-	var result = []; 
-	for (i in stamps){ // iterates over timestamps in our time constraint
-		var stamp = stamps[i]
-		var date = await timestampToDate(stamp)
-		var total = await getTxCount(stamp,pool); 
-		var transactions = await getContractTransactions(stamp, contractID,pool) // get all transactions with our contract
-		var functionFreq = {};
-		transactions.forEach(tx => {
-			var method = abiDecoder.decodeMethod(tx['input'])
-			functionFreq[method.name] = 1 + (functionFreq[method.name] || 0);
+const decodeInput = (inputArr, decoder) => {
+	var functionFreq = {};
+	try{
+		inputArr.forEach( input => {
+			var method = abiDecoder.decodeMethod(input)
+			if (method.name){
+				functionFreq[method.name] = 1 + (functionFreq[method.name] || 0);
+			}	
 		});
-		var contractTxCount = transactions.length
-		var resultObj = {}
-		resultObj = {'timestamp': stamp, 'date':date, 'sampledEthTx': parseInt(total), 'contractTx': contractTxCount, 'functions': functionFreq}
-		result.push(resultObj)
+	}catch(err){
+		console.log('error!',err.stack)	
 	}
-	return result
+	return functionFreq
 }
 
-const splitDays = async (samples) =>{
-	var results = {}
-	console.log(samples)
-	samples.forEach(sample =>{
-		var sampleDate = sample['date']
-		if (results[sampleDate]){
-			var curr = results[sampleDate]
-			curr['sampledEthTx'] = sample['sampledEthTx'] + curr['sampledEthTx']
-			curr['contractTx'] = sample['contractTx'] + curr['contractTx']
-			curr['functions'] = util.sumObjectsByKey(sample['functions'], curr['functions'])
+// format 
+// matches : {timestamp: '0x0424d4jf', input: [0x04k5jedf,0x0dj5323], count: 4}
+// ethTx : {timestamp: '0x0424d4jf', count: 200}
 
+const countFunctions = async (contractID, matches, ethTx) => {
+	let results = {};
+	const decoder = await getAbiDecoder(contractID)
+	matches.forEach(async match => {
+		let sampleDate = timestampToDate(match['timestamp'])
+		let funcs = decodeInput(match['input'], decoder)
+		if (results[sampleDate]){
+			let curr = results[sampleDate]
+			curr['sampledEthTx'] = parseInt(ethTx[match['timestamp']]) + curr['sampledEthTx']
+			curr['contractTx'] = parseInt(match['count'])+ parseInt(curr['contractTx'])
+			curr['functions'] = util.sumObjectsByKey(funcs, curr['functions'])
 		}else{
 			results[sampleDate]= {};
-			var curr = results[sampleDate]
-			curr['sampledEthTx'] = sample['sampledEthTx']
-			curr['contractTx'] = sample['contractTx']
-			curr['functions'] = sample['functions']
+			let curr = results[sampleDate]
+			curr['sampledEthTx'] = parseInt(ethTx[match['timestamp']])
+			curr['contractTx'] = parseInt(match['count'])
+			curr['functions'] = funcs
 		}
 	});
 	return results
 }
-const main = async (contractID,timeStart, timeEnd) =>{
-	const frequencies = await getContractFrequencyByStamp(contractID,timeStart,timeEnd)
-	var result = await splitDays(frequencies)
-	console.log(result)
+
+const main = async (contractID,timeStart, timeEnd) => {
+	contractID = contractID.toLowerCase()
+	const pool = new Pool()
+	let ethTx = await getTxNum(timeStart, timeEnd,pool)
+	let matches = await getContractMatches(timeStart, timeEnd, contractID,pool)
+	let result = await countFunctions(contractID, matches, ethTx)
 	return result
 }
 
-main( '0x8d12a197cb00d4747a1fe03395095ce2a5cc6819', '0x5a6fc956','0x5a7e7918')
-			   
 
+module.exports.main = main;
 
 // http://localhost:5000/api/0x8d12a197cb00d4747a1fe03395095ce2a5cc6819/0x59bcb6cb/0x59d19f03
 // http://localhost:5000/api/0x8d12a197cb00d4747a1fe03395095ce2a5cc6819/0x5a6fc956/0x5a7e7918
 
+// https://shrouded-journey-22394.herokuapp.com/api/0x8d12a197cb00d4747a1fe03395095ce2a5cc6819/0x59bcb6cb/0x59c19f04
 
-module.exports.main = main;
+// main('0x8d12a197cb00d4747a1fe03395095ce2a5cc6819', '0x5a6fc956','0x5a7e7918') local db query 
+
+
 
 
 
