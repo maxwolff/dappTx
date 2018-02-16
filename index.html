@@ -4,7 +4,12 @@
 	API for finding transaction volume of biggest ethereum smart contracts. Polled every 2 hours for the last 6 months. 
 
 	<ul>
-	  <li>Format: /api/:contractID/:startTime/:endTime (all in hex)</li>
+	  <li>Format: /api/:contractID/:startTime/:endTime</li>
+	  	use
+	  	<a href = "https://www.epochconverter.com/hex">hex converter</a>
+	  	for times,
+	  	<a href = "https://etherscan.io/">etherscan</a>
+	  	for contract addresses
 	  <li>Example usage (etherDelta contract, 1 week in September): <a href ="https://shrouded-journey-22394.herokuapp.com/api/0x8d12a197cb00d4747a1fe03395095ce2a5cc6819/0x59bcb6cb/0x59c19f03">link</a></li>
 	</ul>
 	By Max Wolff: <a href ="https://github.com/maxwolff/dappTx">Github</a>
