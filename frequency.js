@@ -59,17 +59,18 @@ const getContractMatches = async (hexStart,hexEnd,contractID,pool) => {
 
 
 const decodeInput = (inputArr, decoder) => {
-	var functionFreq = {};
-	try{
-		inputArr.forEach( input => {
-			var method = abiDecoder.decodeMethod(input)
+	let functionFreq = {};
+	inputArr.forEach( input => {
+		try{
+		
+			let method = abiDecoder.decodeMethod(input)
 			if (method.name){
 				functionFreq[method.name] = 1 + (functionFreq[method.name] || 0);
 			}	
-		});
-	}catch(err){
-		console.log('error!',err.stack)	
-	}
+		}catch(err){
+			console.log('(nonfatal) error! no input / abi match',err.stack)
+		}
+	});
 	return functionFreq
 }
 
@@ -100,6 +101,7 @@ const countFunctions = async (contractID, matches, ethTx) => {
 }
 
 const main = async (contractID,timeStart, timeEnd) => {
+	console.log(contractID,timeStart,timeEnd)
 	contractID = contractID.toLowerCase()
 	const pool = new Pool()
 	let ethTx = await getTxNum(timeStart, timeEnd,pool)

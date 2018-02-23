@@ -7,7 +7,7 @@ app.use(express.static('public'));
 let freq = require('./frequency.js');
 
 async function getData(req,res){
-	var result = await freq.main(req.params['contractID'], req.params['startTime'],req.params['endTime']) 
+  var result = await freq.main(req.params['contractID'], req.params['startTime'],req.params['endTime']) 
   res.send(result)
 }
 
@@ -15,8 +15,12 @@ app.get('/api/:contractID/:startTime/:endTime', function (req, res) {
   getData(req,res)
 })
 
-app.get('/', function (req, res) {
-  res.sendFile(__dirname + '/index.html')//test fucntion
+app.get('/api', function (req, res) {
+  res.sendFile(__dirname + '/index.html')
+});
+
+app.get('/test', function(req,res){
+	res.send('test')
 })
 
 app.listen(PORT, function () {
