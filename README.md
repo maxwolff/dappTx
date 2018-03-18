@@ -3,6 +3,10 @@
 Shows volume of biggest ethereum smart contracts by function name. Pulls data from 
 Infura, puts it in a postgres DB. Exposed via a webapp that queries the DB. Building front-end. 
 
+See Dev branch:
+![alt text](https://github.com/maxwolff/dappTx/blob/master/example.png "Graphs")
+
+
 * hosted at: https://shrouded-journey-22394.herokuapp.com
 * format: /api/:contractID/:startTime/:endTime (all three are in hex, grab these from etherscan)
 * usage: https://shrouded-journey-22394.herokuapp.com/api/0x8d12a197cb00d4747a1fe03395095ce2a5cc6819/0x5a6fc956/0x5a7e7918
