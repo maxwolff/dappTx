@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import MyStockChart from '../components/MyStockChart.jsx';
+import NameForm from '../components/NameForm.js';
 import axios from 'axios';
 
 
@@ -10,7 +11,8 @@ class Home extends Component {
     super(props);
     this.state = {
       config1: {},
-      config2: {}
+      config2: {}, 
+      address: "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d"
     };
   }
 
@@ -21,8 +23,9 @@ class Home extends Component {
   }
 
   callApi = async () => {
-    axios.get('/api/0x06012c8cf97BEaD5deAe237070F9587f8E7A266d/0x5A1340E0/0x5A8F969F') // hard coded
-  .then((response) => {
+    const url = '/api/' + this.state.address + '/0x5A1340E0/0x5A8F969F';  //'/api/0x06012c8cf97BEaD5deAe237070F9587f8E7A266d/0x5A1340E0/0x5A8F969F'
+    console.log(url)
+    axios.get(url).then((response) => {
     var data = response.data
     //var sampled = [];
     var contracts = []; 
@@ -85,11 +88,17 @@ class Home extends Component {
     });
   };
 
+  renderAddress = (submitData) => {
+    this.setState({address: submitData})
+    this.callApi()
+  } 
+
   render() {
     return (
     <div>
       <MyStockChart config={this.state.config1} />,
-      <MyStockChart config={this.state.config2} />
+      <MyStockChart config={this.state.config2} />, 
+      <NameForm addressCallback = {this.renderAddress}/>
     </div>
     )
   }
