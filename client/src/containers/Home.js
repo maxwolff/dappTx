@@ -96,8 +96,8 @@ class Home extends Component {
   render() {
     return (
     <div>
-      <MyStockChart config={this.state.config1} />,
-      <MyStockChart config={this.state.config2} />, 
+      <MyStockChart config={this.state.config1} />
+      <MyStockChart config={this.state.config2} />
       <NameForm addressCallback = {this.renderAddress}/>
     </div>
     )
