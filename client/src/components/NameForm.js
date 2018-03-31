@@ -23,7 +23,7 @@ class NameForm extends React.Component {
       <form onSubmit={this.handleSubmit}>
         <label>
           Contract Address:
-          <input type="text" value={this.state.value} onInput={this.handleChange} />
+          <input type="text" value={this.state.value} onChange={this.handleChange} />
         </label>
         <input type="submit" value="Submit" />
       </form>
