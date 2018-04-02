@@ -9,13 +9,13 @@ class NameForm extends React.Component {
 
   handleChange(event) {
     this.setState({value: event.target.value});
-    console.log(this.state)
+    //console.log(this.state) | setState() is async; log is inaccurate when called before; move to render for accurate log
   }
 
   handleSubmit(event) {
-    this.setState({value: event.target.value});
-    this.props.addressCallback(this.state.value);
     event.preventDefault();
+    //this.setState({value: event.target.value}); | event target for submit is NOT text input value; this undesirably clears state (undefined) upon submit
+    this.props.addressCallback(this.state.value);
   }
 
   render() {
