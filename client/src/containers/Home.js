@@ -95,8 +95,10 @@ class Home extends Component {
   };
 
   renderAddress = (submitData) => {   //change Tx address in container state, call API, should change state independently of API call
-    this.setState({address: submitData});
-    this.callApi();
+    this.setState({address: submitData});   //change state after API call?
+    this.callApi();   //call API with submitData as param?
+    //assign vars for configs
+    //change state using vars
   } 
 
   render() {
