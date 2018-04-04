@@ -1,11 +1,15 @@
 import React from 'react'
-const ReactHighstock = require('react-highcharts/ReactHighstock.src');
-//var Highlight = require('react-highlight');
+const ReactHighstock = require('react-highcharts/ReactHighstock.src')
+//var Highlight = require('react-highlight')
 
-const MyStockChart = (props) => <ReactHighstock
-  config = {props.config}
+class MyStockChart extends React.Component {
 
-/>
-export default MyStockChart;
+  render(){
+    return(
+      <ReactHighstock config={this.props.config} />
+    )
+  }
 
+}
 
+export default MyStockChart
