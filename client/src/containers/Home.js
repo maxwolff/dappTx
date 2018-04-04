@@ -4,32 +4,50 @@ import MyStockChart from '../components/MyStockChart.jsx';
 import NameForm from '../components/NameForm.js';
 import axios from 'axios';
 
-
-
 class Home extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      config1: {},
-      config2: {}, 
-      address: "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d"
+
+    this.contractConfig = {   //init config for contract usage chart
+      title: {
+        text: 'Contract usage as % of Sampled Ethereum Transactions'
+      },
+      series: [
+      {
+        data: [], 
+        name: '%',
+        tooltip: {
+              valueDecimals: 2,
+              xDateFormat: '%Y-%m-%d'
+          }
+      }]
     };
 
-    var chart1 = {};
-    var chart2 = {};
+    this.functionConfig = {   //init config for function usage chart
+      title: {
+        text: 'Contract Function Call Usage'
+      },
+      series: []
+    }
+    
+    this.state = {
+      address: "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d",    //cryptokitties address
+      contractConfig: {},
+      functionConfig: {}
+    };
   }
 
-  componentDidMount() {
+  componentDidMount() {   //initially populate charts with cryptokitties data
     this.callApi(this.state.address)
       .then(res => console.log(res))
       .catch(err => console.log(err));
   }
 
-  callApi = async (address) => {
-    const url = '/api/' + address + '/0x5A1340E0/0x5A8F969F';  //'/api/0x06012c8cf97BEaD5deAe237070F9587f8E7A266d/0x5A1340E0/0x5A8F969F'
+  callApi = async (newAddress) => {
+    const url = '/api/' + newAddress + '/0x5A1340E0/0x5A8F969F';  //'/api/0x06012c8cf97BEaD5deAe237070F9587f8E7A266d/0x5A1340E0/0x5A8F969F'
     console.log(url)
     
-    axios.get(url).then((response) => {   //call API with URL to get data | init arrays for data
+    axios.get(url).then((response) => {   //call API with URL to get data; init arrays for data
       let data = response.data
       //var sampled = [];
       let contracts = []; 
@@ -43,7 +61,7 @@ class Home extends Component {
         const perc = 100.0 * data[elem]['contractTx'] / data[elem]['sampledEthTx']; 
         contracts.push([epoch, perc]);
 
-        const elemFuncs = data[elem].functions;   //manipulate function list and usage data and push to function list and usage arrays
+        const elemFuncs = data[elem].functions;   //manipulate function data and push to function arrays
         Object.keys(elemFuncs).forEach( func => {
           if (!(funcList.includes(func))){
             funcList.push(func)
@@ -54,26 +72,7 @@ class Home extends Component {
         });
       });
 
-      this.setState({   //doing too much-async causing render issues? manipulate config data, THEN call setState
-        config1: {
-          title: {
-            text: 'Contract usage as % of Sampled Ethereum Transactions'
-          },
-          series: [
-          {
-            data: contracts, 
-            name: '%',
-            tooltip: {
-                  valueDecimals: 2,
-                  xDateFormat: '%Y-%m-%d'
-              }
-
-
-          }]
-        }
-      });
-
-      var result = []   //manipulate function usage array for chart config
+      var result = []   //consolidate function data in result array for chart config
       for (var i in funcResultArr){
         result.push({
           data: funcResultArr[i],
@@ -82,34 +81,30 @@ class Home extends Component {
         });
       }
 
-      this.setState({   //state should probably be set after API is called, data is manipulated, and configs are ready
-        config2: {
-          title: {
-            text: 'Contract Function Call Usage'
-          },
-          series: result
-        }
+      this.contractConfig.series[0].data = contracts;   //update chart configs with fetched data
+      this.functionConfig.series = result;
+
+      this.setState({   //set state with new chart configs and address
+        address: newAddress,
+        contractConfig: this.contractConfig,
+        functionConfig: this.functionConfig
       });
 
-      //console.log(this.state);
     }).catch(function (error) {
       console.log(error);
     });
   };
 
-  renderAddress = (submitData) => {   //change Tx address in container state, call API, should change state independently of API call
-    //this.setState({address: submitData});   //change state after API call?
-    this.callApi(submitData);   //call API with submitData as param? return configs
-    //assign vars for configs to API call returns
-    //change state using vars
+  renderAddress = (submitData) => {
+    this.callApi(submitData);   //get chart data for a new address
   } 
 
   render() {
     return (
     <div>
       <NameForm addressCallback = {this.renderAddress}/>
-      <MyStockChart config={this.state.config1} class="chart contract" />
-      <MyStockChart config={this.state.config2} class="chart function" /> 
+      <MyStockChart config={this.state.contractConfig} class="chart contract" />
+      <MyStockChart config={this.state.functionConfig} class="chart function" /> 
     </div>
     )
   }
