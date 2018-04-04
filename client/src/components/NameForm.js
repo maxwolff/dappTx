@@ -13,8 +13,8 @@ class NameForm extends React.Component {
   }
 
   handleSubmit(event) {
-    this.props.addressCallback(this.state.value);
     event.preventDefault();
+    this.props.addressCallback(this.state.value);
   }
 
   render() {
