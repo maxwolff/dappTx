@@ -4,9 +4,14 @@ const ReactHighstock = require('react-highcharts/ReactHighstock.src')
 
 class MyStockChart extends React.Component {
 
+  componentDidUpdate() {
+		let chart = this.refs.chart.getChart();
+		chart.reflow = () => {};
+	}
+
   render(){
     return(
-      <ReactHighstock config={this.props.config} />
+      <ReactHighstock config={this.props.config} ref="chart" />
     )
   }
 
