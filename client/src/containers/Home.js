@@ -20,7 +20,7 @@ class Home extends Component {
   }
 
   componentDidMount() {
-    this.callApi()
+    this.callApi(this.state.address)
       .then(res => console.log(res))
       .catch(err => console.log(err));
   }
@@ -108,8 +108,8 @@ class Home extends Component {
     return (
     <div>
       <NameForm addressCallback = {this.renderAddress}/>
-      <MyStockChart config={this.state.config1} />
-      <MyStockChart config={this.state.config2} /> 
+      <MyStockChart config={this.state.config1} class="chart contract" />
+      <MyStockChart config={this.state.config2} class="chart function" /> 
     </div>
     )
   }
