@@ -14,6 +14,9 @@ class Home extends Component {
       config2: {}, 
       address: "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d"
     };
+
+    var chart1 = {};
+    var chart2 = {};
   }
 
   componentDidMount() {
@@ -22,10 +25,10 @@ class Home extends Component {
       .catch(err => console.log(err));
   }
 
-  callApi = async () => {
-    const url = '/api/' + this.state.address + '/0x5A1340E0/0x5A8F969F';  //'/api/0x06012c8cf97BEaD5deAe237070F9587f8E7A266d/0x5A1340E0/0x5A8F969F'
-    //console.log(url)
-
+  callApi = async (address) => {
+    const url = '/api/' + address + '/0x5A1340E0/0x5A8F969F';  //'/api/0x06012c8cf97BEaD5deAe237070F9587f8E7A266d/0x5A1340E0/0x5A8F969F'
+    console.log(url)
+    
     axios.get(url).then((response) => {   //call API with URL to get data | init arrays for data
       let data = response.data
       //var sampled = [];
@@ -95,9 +98,9 @@ class Home extends Component {
   };
 
   renderAddress = (submitData) => {   //change Tx address in container state, call API, should change state independently of API call
-    this.setState({address: submitData});   //change state after API call?
-    this.callApi();   //call API with submitData as param?
-    //assign vars for configs
+    //this.setState({address: submitData});   //change state after API call?
+    this.callApi(submitData);   //call API with submitData as param? return configs
+    //assign vars for configs to API call returns
     //change state using vars
   } 
 
