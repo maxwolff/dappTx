@@ -93,16 +93,16 @@ class Home extends Component {
     })
   }
 
-  renderAddress = (submitData) => {
-    this.callApi(submitData)   //get chart data for a new address
+  renderAddress = (newAddress) => {
+    this.callApi(newAddress)   //get chart data for a new address
   } 
 
   render() {
     return (
     <div>
       <NameForm addressCallback = {this.renderAddress}/>
-      <MyStockChart config={this.state.contractConfig} class="chart contract-chart" />
-      <MyStockChart config={this.state.functionConfig} class="chart function-chart" /> 
+      <MyStockChart class="chart contract-chart" config={this.state.contractConfig} />
+      <MyStockChart class="chart function-chart" config={this.state.functionConfig} /> 
     </div>
     )
   }
