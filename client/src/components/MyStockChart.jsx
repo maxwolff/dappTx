@@ -4,13 +4,15 @@ const ReactHighstock = require('react-highcharts/ReactHighstock.src')
 let chartReflow = undefined
 
 class MyStockChart extends React.Component {
-
+  
   componentDidUpdate() {
-		const chart = this.refs.chart ? this.refs.chart.getChart() : {}
-    chartReflow = chartReflow || chart.reflow
-    chart.reflow = () => {}
-    setTimeout(() => (chart.reflow = chartReflow))
-	}
+      const chart = this.refs.chart ? this.refs.chart.getChart() : {}   //allow chart animation while preserving reflow
+      chartReflow = chartReflow || chart.reflow
+      chart.reflow = () => {}
+      setTimeout(() => (chart.reflow = chartReflow))
+
+      this.props.isLoading ? chart.showLoading() : chart.hideLoading()    //show or hide loading state
+  }
 
   render(){
     return(
