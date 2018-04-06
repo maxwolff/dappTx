@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-
 import MyStockChart from '../components/MyStockChart.jsx'
 import NameForm from '../components/NameForm.js'
 import axios from 'axios'
@@ -9,8 +8,18 @@ class Home extends Component {
     super(props)
 
     this.contractConfig = {   //init config for contract usage chart
+      loading: {
+        showDuration: 500
+      },
       title: {
         text: 'Contract usage as % of Sampled Ethereum Transactions'
+      },
+      plotOptions: {
+        series: {
+          animation: {
+            duration: 0
+          }
+        }
       },
       series: [
       {
@@ -23,17 +32,31 @@ class Home extends Component {
       }]
     }
 
-    this.functionConfig = {   //init config for function usage chart
+    this.fnConfig = {   //init config for function usage chart
+      loading: {
+        showDuration: 500
+      },
       title: {
         text: 'Contract Function Call Usage'
       },
+      plotOptions: {
+        series: {
+          animation: {
+            duration: 0
+          }
+        }
+      },
       series: []
     }
+
+    this.contractAnim = this.contractConfig.plotOptions.series.animation    //shorthands for chart animation properties
+    this.fnAnim = this.fnConfig.plotOptions.series.animation
     
     this.state = {
-      address: "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d",    //cryptokitties address
+      address: "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d",    //cryptokitties address for init chart render
       contractConfig: {},
-      functionConfig: {}
+      fnConfig: {},
+      isLoading: false
     }
   }
 
@@ -80,12 +103,20 @@ class Home extends Component {
       }
 
       this.contractConfig.series[0].data = contracts   //update chart configs with fetched data
-      this.functionConfig.series = result
+      this.fnConfig.series = result
 
       this.setState({   //set state with new chart configs and address
         address: newAddress,
         contractConfig: this.contractConfig,
-        functionConfig: this.functionConfig
+        fnConfig: this.fnConfig
+      })
+
+      this.contractAnim.duration = this.fnAnim.duration = 1000    //enable chart animation before update
+
+      this.setState({   //update charts with new data and exit loading state
+        contractConfig: this.contractConfig,
+        fnConfig: this.fnConfig,
+        isLoading: false
       })
 
     }).catch(function (error) {
@@ -94,15 +125,21 @@ class Home extends Component {
   }
 
   renderAddress = (newAddress) => {
+    this.contractAnim.duration = this.fnAnim.duration = 0   //disable chart animation before entering loading state
+    this.setState({   //enter loading state
+      contractConfig: this.contractConfig,
+      fnConfig: this.fnConfig,
+      isLoading: true
+    })
     this.callApi(newAddress)   //get chart data for a new address
-  } 
+  }
 
   render() {
     return (
     <div>
       <NameForm addressCallback = {this.renderAddress}/>
-      <MyStockChart class="chart contract-chart" config={this.state.contractConfig} />
-      <MyStockChart class="chart function-chart" config={this.state.functionConfig} /> 
+      <MyStockChart class="chart contract-chart" config={this.state.contractConfig} isLoading={this.state.isLoading} />
+      <MyStockChart class="chart function-chart" config={this.state.fnConfig} isLoading={this.state.isLoading} /> 
     </div>
     )
   }
