@@ -2,9 +2,13 @@ import React from 'react'
 class NameForm extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {value: ''};
+    this.state = {value: '0x06012c8cf97BEaD5deAe237070F9587f8E7A266d'};
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  componentDidMount() {
+    this.props.addressCallback(this.state.value)
   }
 
   handleChange(event) {
