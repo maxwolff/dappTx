@@ -12,7 +12,7 @@ class Home extends Component {
         showDuration: 500
       },
       title: {
-        text: 'Contract usage as % of Sampled Ethereum Transactions'
+        text: 'Contract Txns (Pct. of Sampled Ethereum Txns)'
       },
       plotOptions: {
         series: {
@@ -24,9 +24,10 @@ class Home extends Component {
       series: [
       {
         data: [], 
-        name: '%',
+        name: 'Volume',
         tooltip: {
               valueDecimals: 2,
+              valueSuffix: '%',
               xDateFormat: '%Y-%m-%d'
           }
       }]
@@ -37,7 +38,7 @@ class Home extends Component {
         showDuration: 500
       },
       title: {
-        text: 'Contract Function Call Usage'
+        text: 'Contract Function Calls'
       },
       plotOptions: {
         series: {
@@ -53,15 +54,11 @@ class Home extends Component {
     this.fnAnim = this.fnConfig.plotOptions.series.animation
     
     this.state = {
-      address: "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d",    //cryptokitties address for init chart render
+      address: '',
       contractConfig: {},
       fnConfig: {},
       isLoading: false
     }
-  }
-
-  componentDidMount() {   //initially populate charts with cryptokitties data
-    this.callApi(this.state.address)
   }
 
   callApi = async (newAddress) => {
