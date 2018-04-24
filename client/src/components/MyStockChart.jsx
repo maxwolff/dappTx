@@ -14,7 +14,7 @@ class MyStockChart extends React.Component {
 
   showLoading() {   //expose loading state trigger function for imperative calls from parent component via ref
     const chart = this.refs.chart ? this.refs.chart.getChart() : {}
-    chart.showLoading()
+    chart.showLoading('<img src="chart-load.gif" height="48px"><br>Loading chart data...')
   }
 
   render(){
