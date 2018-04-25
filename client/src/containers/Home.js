@@ -14,7 +14,7 @@ class Home extends Component {
         borderRadius: 2,
         spacing: [16,16,16,16]
       },
-      colors: ['#54A0FF'],
+      colors: ['#54A0FF', '#1DD1A1', '#FECA57', '#FF6B6B', '#FF9FF3', '#5F27CD', '#48DBFB', '#00D2D3'],
       loading: {
         showDuration: 500,
         labelStyle: {
@@ -94,84 +94,8 @@ class Home extends Component {
       }
     }
 
-    this.fnConfig = {   //init config for function usage chart
-      chart: {
-        borderColor: '#e6e6e8',
-        borderWidth: 1,
-        borderRadius: 2,
-        spacing: [16,16,16,16]
-      },
-      colors: ['#54A0FF', '#1DD1A1', '#FECA57', '#FF6B6B', '#FF9FF3', '#5F27CD', '#48DBFB', '#00D2D3'],
-      loading: {
-        showDuration: 500,
-        labelStyle: {
-          fontFamily: 'IBM Plex Mono, sans-serif',
-          fontWeight: 400,
-          color: '#0080ff'
-        }
-      },
-      rangeSelector: {
-        buttonTheme: {
-          fill: '#f6f6f8',
-          style: {
-            fontFamily: 'IBM Plex Mono, sans-serif',
-            color: '#383840'
-          },
-          states: {
-            hover: {
-              fill: '#0080ff',
-              style: {
-                color: 'white'
-              }
-            },
-            select: {
-              fill: '#54A0FF',
-              r: 1,
-              style: {
-                color: 'white'
-              }
-            }
-          }
-        },
-        inputStyle: {
-          fontFamily: 'IBM Plex Mono, sans-serif',
-          color: '#383840'
-        },
-        inputBoxBorderColor: '#e6e6e8',
-        labelStyle: {
-          fontFamily: 'IBM Plex Mono, sans-serif',
-          color: '#383840'
-        }
-      },
-      scrollbar: {
-        barBackgroundColor: '#f6f6f8',
-        barBorderColor: 'e6e6e8',
-        buttonArrowColor: '#383840',
-        buttonBackgroundColor: '#f6f6f8',
-        buttonBorderColor: '#e6e6e8',
-        trackBackgroundColor: '#e6e6e8',
-        trackBorderColor: '#e6e6e8'
-      },
-      series: [],
-      xAxis: {
-        labels: {
-          style: {
-            fontFamily: 'IBM Plex Mono, sans-serif',
-            color: '#383840'
-          }
-        },
-        lineColor: 'white'
-      },
-      yAxis: {
-        labels: {
-          style: {
-            fontFamily: 'IBM Plex Mono, sans-serif',
-            color: '#383840'
-          }
-        }
-      }
-    }
-    
+    this.fnConfig = Object.assign({}, this.contractConfig)    //copy init config for function usage chart
+
     this.state = {
       address: '',
       contractConfig: this.contractConfig,
@@ -211,7 +135,7 @@ class Home extends Component {
         })
       })
 
-      var result = []   //consolidate function data in result array for chart config
+      let result = []   //consolidate function data in result array for chart config
       for (var i in funcResultArr){
         result.push({
           data: funcResultArr[i],
