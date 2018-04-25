@@ -20,7 +20,7 @@ class Home extends Component {
         labelStyle: {
           fontFamily: 'IBM Plex Mono, sans-serif',
           fontWeight: 400,
-          color: '#383840'
+          color: '#0080ff'
         }
       },
       rangeSelector: {
@@ -82,6 +82,7 @@ class Home extends Component {
             color: '#383840'
           }
         },
+        lineColor: 'white'
       },
       yAxis: {
         labels: {
@@ -106,7 +107,7 @@ class Home extends Component {
         labelStyle: {
           fontFamily: 'IBM Plex Mono, sans-serif',
           fontWeight: 400,
-          color: '#383840'
+          color: '#0080ff'
         }
       },
       rangeSelector: {
@@ -159,6 +160,7 @@ class Home extends Component {
             color: '#383840'
           }
         },
+        lineColor: 'white'
       },
       yAxis: {
         labels: {
@@ -172,8 +174,8 @@ class Home extends Component {
     
     this.state = {
       address: '',
-      contractConfig: {},
-      fnConfig: {}
+      contractConfig: this.contractConfig,
+      fnConfig: this.fnConfig
     }
 
     this.contractChart = React.createRef()    //chart component refs for imperative loading animations

@@ -6,7 +6,7 @@ let chartReflow = undefined
 class MyStockChart extends React.Component {
 
   componentDidMount() {
-    this.showLoading()
+    this.showLoading('No chart data...')
   }
   
   componentDidUpdate() {
