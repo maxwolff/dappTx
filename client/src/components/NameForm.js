@@ -8,7 +8,7 @@ class NameForm extends React.Component {
   }
 
   componentDidMount() {
-    this.props.addressCallback(this.state.value)
+    // this.props.addressCallback(this.state.value)
   }
 
   handleChange(event) {
