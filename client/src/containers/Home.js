@@ -9,7 +9,12 @@ class Home extends Component {
 
     this.contractConfig = {   //init config for contract usage chart
       loading: {
-        showDuration: 500
+        showDuration: 500,
+        labelStyle: {
+          color: '#0080ff',
+          fontFamily: 'IBM Plex Mono, sans-serif',
+          fontWeight: '400'
+        }
       },
       title: {
         text: 'Contract Txns (Pct. of Sampled Ethereum Txns)'
