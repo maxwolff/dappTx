@@ -1,2 +1,5 @@
+/* CSS Reset */
 @import url('https://meyerweb.com/eric/tools/css/reset/reset.css');
 
+/* IBM Plex from Google Fonts */
+@import url('https://fonts.googleapis.com/css?family=IBM+Plex+Mono:400,500|IBM+Plex+Sans');

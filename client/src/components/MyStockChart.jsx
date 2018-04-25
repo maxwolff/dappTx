@@ -4,6 +4,10 @@ const ReactHighstock = require('react-highcharts/ReactHighstock.src')
 let chartReflow = undefined
 
 class MyStockChart extends React.Component {
+
+  componentDidMount() {
+    this.showLoading()
+  }
   
   componentDidUpdate() {
       const chart = this.refs.chart ? this.refs.chart.getChart() : {}   //allow chart animation while preserving reflow
