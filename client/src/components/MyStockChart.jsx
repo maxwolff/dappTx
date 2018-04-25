@@ -16,14 +16,19 @@ class MyStockChart extends React.Component {
       setTimeout(() => (chart.reflow = chartReflow))
   }
 
-  showLoading() {   //expose loading state trigger function for imperative calls from parent component via ref
+  showLoading(message) {   //expose loading state trigger function for imperative calls from parent component via ref
     const chart = this.refs.chart ? this.refs.chart.getChart() : {}
-    chart.showLoading('<img src="chart-load.gif" height="48px"><br>Loading chart data...')
+    if(message)
+      chart.showLoading(message)
+    else
+      chart.showLoading('<img src="chart-load.gif" height="48px"><br>Loading chart data...')
   }
 
   render(){
     return(
-      <ReactHighstock config={this.props.config} ref="chart" />
+      <div class="chart">
+        <ReactHighstock config={this.props.config} ref="chart" />
+      </div>
     )
   }
 

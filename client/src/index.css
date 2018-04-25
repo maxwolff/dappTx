@@ -3,3 +3,13 @@
 
 /* IBM Plex from Google Fonts */
 @import url('https://fonts.googleapis.com/css?family=IBM+Plex+Mono:400,500|IBM+Plex+Sans');
+
+body {
+    font-family: 'IBM Plex Mono', monospace;
+    font-weight: 400;
+    color: #383840
+}
+
+.chart {
+    margin: 32px;
+}
