@@ -84,8 +84,8 @@ class Home extends Component {
     return (
     <div>
       <NameForm addressCallback = {this.renderAddress}/>
-      <MyStockChart class="chart contract-chart" ref={this.contractChart} config={this.state.contractConfig} isLoading={this.state.isLoading} />
-      <MyStockChart class="chart function-chart" ref={this.fnChart} config={this.state.fnConfig} isLoading={this.state.isLoading} /> 
+      <MyStockChart class="chart contract-chart" ref={this.contractChart} config={this.state.contractConfig} />
+      <MyStockChart class="chart function-chart" ref={this.fnChart} config={this.state.fnConfig} /> 
     </div>
     )
   }
