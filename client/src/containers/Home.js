@@ -3,18 +3,16 @@ import MyStockChart from '../components/MyStockChart.jsx'
 import ChartConfig from '../components/ChartConfig.js'
 import NameForm from '../components/NameForm.js'
 import axios from 'axios'
+import {cloneDeep} from 'lodash'
 
 class Home extends Component {
   constructor(props) {
     super(props)
 
-    this.volConfig = Object.assign({}, ChartConfig)   //assign init chart configs from import
-    this.fnConfig = Object.assign({}, ChartConfig)
-
     this.state = {
       address: '',
-      volConfig: this.volConfig,
-      fnConfig: this.fnConfig
+      volConfig: cloneDeep(ChartConfig),
+      fnConfig: cloneDeep(ChartConfig)
     }
 
     this.volChart = React.createRef()    //chart component refs for imperative loading animations
@@ -52,13 +50,15 @@ class Home extends Component {
         return series
       }, [])
 
-      this.volConfig.series[0].data = volSeries   //update chart configs with fetched data
-      this.fnConfig.series = fnSeries
+      const newVolConfig = cloneDeep(this.state.volConfig)    //create new chart configs with fetched data
+      newVolConfig.series[0].data = volSeries
+      const newFnConfig = cloneDeep(this.state.fnConfig)
+      newFnConfig.series = fnSeries
 
       this.setState({   //set state with new chart configs and address
         address: newAddress,
-        volConfig: this.volConfig,
-        fnConfig: this.fnConfig
+        volConfig: newVolConfig,
+        fnConfig: newFnConfig
       })
 
     }).catch(function (error) {
