@@ -8,16 +8,16 @@ class Home extends Component {
   constructor(props) {
     super(props)
 
-    this.contractConfig = Object.assign({}, ChartConfig)
+    this.volConfig = Object.assign({}, ChartConfig)
     this.fnConfig = Object.assign({}, ChartConfig)    //copy init config for function usage chart
 
     this.state = {
       address: '',
-      contractConfig: this.contractConfig,
+      volConfig: this.volConfig,
       fnConfig: this.fnConfig
     }
 
-    this.contractChart = React.createRef()    //chart component refs for imperative loading animations
+    this.volChart = React.createRef()    //chart component refs for imperative loading animations
     this.fnChart = React.createRef()
   }
 
@@ -25,46 +25,39 @@ class Home extends Component {
     const url = '/api/' + newAddress + '/0x5A1340E0/0x5A8F969F'  //'/api/0x06012c8cf97BEaD5deAe237070F9587f8E7A266d/0x5A1340E0/0x5A8F969F'
     console.log(url)
     
-    axios.get(url).then((response) => {   //call API with URL to get data; init arrays for data
-      let data = response.data
-      //var sampled = []
-      let contracts = [] 
-      let funcList = [] 
-      let funcResultArr = []
+    axios.get(url).then((response) => {   //call API with URL to get data
+      const data = response.data
 
-      Object.keys(data).forEach( elem => {  //manipulate contract data and push to contracts array
-        const dateTemp = new Date(elem)
-        //sampled.push([Math.round(dateTemp.getTime()),data[elem]['sampledEthTx']])
-        const epoch = Math.round(dateTemp.getTime())
-        const perc = 100.0 * data[elem]['contractTx'] / data[elem]['sampledEthTx']
-        contracts.push([epoch, perc])
-
-        const elemFuncs = data[elem].functions   //manipulate function data and push to function arrays
-        Object.keys(elemFuncs).forEach( func => {
-          if (!(funcList.includes(func))){
-            funcList.push(func)
-            funcResultArr[func] = []
-          } else{
-            funcResultArr[func].push([epoch,data[elem].functions[func]])
-          }
-        })
+      const volSeries = Object.keys(data).map(elem => {   //map contract data
+        const date = Math.round(new Date(elem).getTime())
+        const pct = 100.0 * data[elem]['contractTx'] / data[elem]['sampledEthTx']
+        return [date, pct]
       })
 
-      let result = []   //consolidate function data in result array for chart config
-      for (var i in funcResultArr){
-        result.push({
-          data: funcResultArr[i],
-          name: i, 
-          showInNavigator: true
+      const fnSeries = Object.keys(data).reduce((series, elem) => {   //map function data
+        const date = Math.round(new Date(elem).getTime())
+        Object.keys(data[elem].functions).map((func) => {
+          const index = series.findIndex(series => series['name'] === func)
+          if(index < 0) {
+            series.push({
+              data: [[date, data[elem].functions[func]]],
+              name: func,
+              showInNavigator: true
+            })
+          }
+          else {
+            series[index].data.push([date, data[elem].functions[func]])
+          } 
         })
-      }
+        return series
+      }, [])
 
-      this.contractConfig.series[0].data = contracts   //update chart configs with fetched data
-      this.fnConfig.series = result
+      this.volConfig.series[0].data = volSeries   //update chart configs with fetched data
+      this.fnConfig.series = fnSeries
 
       this.setState({   //set state with new chart configs and address
         address: newAddress,
-        contractConfig: this.contractConfig,
+        volConfig: this.volConfig,
         fnConfig: this.fnConfig
       })
 
@@ -74,7 +67,7 @@ class Home extends Component {
   }
 
   renderAddress = (newAddress) => {
-    this.contractChart.current ? this.contractChart.current.showLoading() : {}    //trigger loading states before rerender
+    this.volChart.current ? this.volChart.current.showLoading() : {}    //trigger loading states before rerender
     this.fnChart.current ? this.fnChart.current.showLoading() : {}
 
     this.callApi(newAddress)   //get chart data for a new address
@@ -84,7 +77,7 @@ class Home extends Component {
     return (
     <div>
       <NameForm addressCallback = {this.renderAddress}/>
-      <MyStockChart class="chart contract-chart" ref={this.contractChart} config={this.state.contractConfig} />
+      <MyStockChart class="chart contract-chart" ref={this.volChart} config={this.state.volConfig} />
       <MyStockChart class="chart function-chart" ref={this.fnChart} config={this.state.fnConfig} /> 
     </div>
     )
