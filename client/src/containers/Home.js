@@ -71,10 +71,10 @@ class Home extends Component {
         name: 'Volume',
         tooltip: {
               valueDecimals: 2,
-              valueSuffix: '%',
-              xDateFormat: '%Y-%m-%d'
+              valueSuffix: '%'
           }
       }],
+      tooltip: {xDateFormat: '%Y-%m-%d'},
       xAxis: {
         labels: {
           style: {
@@ -140,7 +140,7 @@ class Home extends Component {
         result.push({
           data: funcResultArr[i],
           name: i, 
-          tooltip:{ xDateFormat: '%Y-%m-%d'}
+          showInNavigator: true
         })
       }
 
