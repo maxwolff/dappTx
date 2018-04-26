@@ -28,13 +28,13 @@ class Home extends Component {
     axios.get(url).then((response) => {   //call API with URL to get data
       const data = response.data
 
-      const volSeries = Object.keys(data).map(elem => {   //map contract data
+      const volSeries = Object.keys(data).map(elem => {   //map contract data for chart series config
         const date = Math.round(new Date(elem).getTime())
         const pct = 100.0 * data[elem]['contractTx'] / data[elem]['sampledEthTx']
         return [date, pct]
       })
 
-      const fnSeries = Object.keys(data).reduce((series, elem) => {   //map function data
+      const fnSeries = Object.keys(data).reduce((series, elem) => {   //reduce function data for chart series config
         const date = Math.round(new Date(elem).getTime())
         Object.keys(data[elem].functions).map((func) => {
           const index = series.findIndex(series => series['name'] === func)
@@ -84,4 +84,3 @@ class Home extends Component {
   }
 }
 export default Home
-
