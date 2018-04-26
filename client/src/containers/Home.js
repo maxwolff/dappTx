@@ -26,6 +26,7 @@ class Home extends Component {
       rangeSelector: {
         buttonTheme: {
           fill: '#f6f6f8',
+          r: 1,
           style: {
             fontFamily: 'IBM Plex Mono, sans-serif',
             color: '#383840'
@@ -39,7 +40,6 @@ class Home extends Component {
             },
             select: {
               fill: '#54A0FF',
-              r: 1,
               style: {
                 color: 'white'
               }
