@@ -8,8 +8,8 @@ class Home extends Component {
   constructor(props) {
     super(props)
 
-    this.volConfig = Object.assign({}, ChartConfig)
-    this.fnConfig = Object.assign({}, ChartConfig)    //copy init config for function usage chart
+    this.volConfig = Object.assign({}, ChartConfig)   //assign init chart configs from import
+    this.fnConfig = Object.assign({}, ChartConfig)
 
     this.state = {
       address: '',
@@ -22,7 +22,7 @@ class Home extends Component {
   }
 
   callApi = async (newAddress) => {
-    const url = '/api/' + newAddress + '/0x5A1340E0/0x5A8F969F'  //'/api/0x06012c8cf97BEaD5deAe237070F9587f8E7A266d/0x5A1340E0/0x5A8F969F'
+    const url = '/api/' + newAddress + '/0x5A1340E0/0x5A8F969F'
     console.log(url)
     
     axios.get(url).then((response) => {   //call API with URL to get data
