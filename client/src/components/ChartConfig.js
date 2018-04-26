@@ -23,7 +23,7 @@ let ChartConfig = {   //init config for contract usage chart
             fill: '#f6f6f8',
             r: 1,
             style: {
-                fontFamily: 'IBM Plex Mono, sans-serif',
+                fontFamily: 'IBM Plex Sans, sans-serif',
                 color: '#383840'
             },
             states: {
@@ -38,11 +38,17 @@ let ChartConfig = {   //init config for contract usage chart
                     style: {
                         color: 'white'
                     }
+                },
+                disabled: {
+                    fill: '#f6f6f8',
+                    style: {
+                        color: '#bebec0'
+                    }
                 }
             }
         },
         inputStyle: {
-            fontFamily: 'IBM Plex Mono, sans-serif',
+            fontFamily: 'IBM Plex Sans, sans-serif',
             color: '#383840'
         },
         inputBoxBorderColor: '#e6e6e8',
