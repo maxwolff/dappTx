@@ -10,8 +10,12 @@ let ChartConfig = {   //init config for contract usage chart
         showDuration: 500,
         labelStyle: {
             fontFamily: 'IBM Plex Mono, sans-serif',
+            fontSize: '16px',
             fontWeight: 400,
-            color: '#0080ff'
+            color: '#54A0FF'
+        },
+        style: {
+            opacity: .65
         }
     },
     rangeSelector: {
