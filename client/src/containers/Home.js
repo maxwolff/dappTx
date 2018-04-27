@@ -34,7 +34,7 @@ class Home extends Component {
 
             const fnSeries = Object.keys(data).reduce((series, elem) => {   //reduce function data for chart series config
                 const date = Math.round(new Date(elem).getTime())
-                Object.keys(data[elem].functions).map((func) => {
+                Object.keys(data[elem].functions).reduce((arr, func) => {
                     const index = series.findIndex(series => series['name'] === func)
                     if (index < 0) {
                         series.push({
@@ -42,11 +42,13 @@ class Home extends Component {
                             name: func,
                             showInNavigator: true
                         })
+                        return series
                     }
                     else {
                         series[index].data.push([date, data[elem].functions[func]])
+                        return series
                     }
-                })
+                }, [])
                 return series
             }, [])
 
@@ -78,8 +80,8 @@ class Home extends Component {
             <div>
                 <AppBar enterAddress={this.renderAddress} />
                 <main className="charts">
-                    <StockChart class="chart contract-chart" ref={this.volChart} config={this.state.volConfig} title="Contract Volume" subtitle="(percentage of sampled Ethereum transactions)" />
-                    <StockChart class="chart function-chart" ref={this.fnChart} config={this.state.fnConfig} title="Contract Functions Call" />
+                    <StockChart class="chart contract-chart" ref={this.volChart} config={this.state.volConfig} title="Contract Volume" subtitle="(percentage of sampled Ethereum transactions)" loadExample={this.renderAddress} />
+                    <StockChart class="chart function-chart" ref={this.fnChart} config={this.state.fnConfig} title="Contract Function Calls" loadExample={this.renderAddress} />
                 </main>
             </div>
         )
