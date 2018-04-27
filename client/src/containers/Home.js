@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-import MyStockChart from '../components/MyStockChart.jsx'
-import ChartConfig from '../components/ChartConfig.js'
-import NameForm from '../components/NameForm.js'
+import AppBar from '../components/AppBar'
+import MyStockChart from '../components/MyStockChart'
+import ChartConfig from '../components/ChartConfig'
 import axios from 'axios'
 import {cloneDeep} from 'lodash'
 
@@ -76,7 +76,7 @@ class Home extends Component {
   render() {
     return (
     <div>
-      <NameForm addressCallback = {this.renderAddress}/>
+      <AppBar enterAddress = {this.renderAddress} />
       <MyStockChart class="chart contract-chart" ref={this.volChart} config={this.state.volConfig} />
       <MyStockChart class="chart function-chart" ref={this.fnChart} config={this.state.fnConfig} /> 
     </div>
