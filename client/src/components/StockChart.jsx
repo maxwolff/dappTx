@@ -3,10 +3,11 @@ const ReactHighstock = require('react-highcharts/ReactHighstock.src')
 //var Highlight = require('react-highlight')
 let chartReflow = undefined
 
-class MyStockChart extends React.Component {
+class StockChart extends React.Component {
 
   componentDidMount() {
     this.showLoading('No chart data...')
+    window.dispatchEvent(new Event('resize'))
   }
   
   componentDidUpdate() {
@@ -26,12 +27,16 @@ class MyStockChart extends React.Component {
 
   render(){
     return(
-      <div class="chart">
-        <ReactHighstock config={this.props.config} ref="chart" />
+      <div className="chart-area">
+        <header className="chart-header">
+          <h1 className="chart-title">{this.props.title}</h1>
+          <p className="chart-subtitle">{this.props.subtitle}</p>
+        </header>
+        <ReactHighstock config={this.props.config} ref="chart" className="chart" />
       </div>
     )
   }
 
 }
 
-export default MyStockChart
+export default StockChart

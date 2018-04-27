@@ -90,6 +90,28 @@ body {
     cursor: pointer;
 }
 
-.chart {
-    margin: 32px;
+.charts {
+    padding: 96px 32px 0;
+}
+
+.chart-area {
+    margin-bottom: 48px;
+}
+
+.chart-header {
+    align-items: baseline;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.chart-title {
+    color: white;
+    font-size: 32px;
+    font-weight: 500;
+}
+
+.chart-subtitle {
+    color: rgba(255,255,255,.5);
+    font-size: 16px;
 }
