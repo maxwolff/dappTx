@@ -4,10 +4,90 @@
 /* IBM Plex from Google Fonts */
 @import url('https://fonts.googleapis.com/css?family=IBM+Plex+Mono:400,500|IBM+Plex+Sans:400,500');
 
+:root {
+    --offset: 1.5rem;
+    --max_width: 72rem;
+    --columns: 6;
+    --gutter: .5rem;
+    --baseline: 3rem;
+    --baseline-shift: 2rem;
+    --color: hsla(204, 80%, 72%, 0.25);
+  }
+
 body {
+    background: #282830;
+    color: #383840;
     font-family: 'IBM Plex Mono', monospace;
     font-weight: 400;
-    color: #383840
+}
+
+.app-bar {
+    display: grid;
+    background: #282830;
+    box-shadow: 0 4px 8px rgba(0,0,0,.25);
+    grid: 48px / 320px auto;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1;
+}
+
+.title {
+    background: #282830;
+    padding-left: 32px;
+    grid-column: 1 2;
+}
+
+.logotype {
+    height: 21px;
+    margin-top: 13px;
+    padding-bottom: px;
+}
+
+.address-bar {
+    display: flex;
+}
+
+.address-input {
+    background: #484850;
+    border: 0;
+    box-sizing: border-box;
+    color: white;
+    font-size: 16px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-weight: 400;
+    height: 48px;
+    padding-left: 32px;
+    width: 100%;
+}
+
+.address-input:focus {
+    box-shadow: inset 0 4px 8px rgba(0,0,0,.25);
+    outline: 2px solid rgba(255,255,255,.25);
+}
+
+.button.submit { 
+    background: #0080ff;
+    border: 0;
+    border-radius: 0;
+    box-sizing: border-box;
+    color: white;
+    font-family: 'IBM Plex Mono', monospace;
+    font-weight: 400;
+    font-size: 16px;
+    grid-column: 3 / 4;
+    height: 48px;
+    padding: 0 24px;
+}
+
+.button.submit:focus {
+    outline: 2px solid #80b8ff;
+    outline-offset: -2px;
+}
+
+.button.submit:hover {
+    background: #54a0ff;
+    cursor: pointer;
 }
 
 .chart {
