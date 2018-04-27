@@ -1,6 +1,7 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "ContracTx",
+  "name": "ContracTx",
+  "description": "Use this utility to analyze Ethereum smart contracts and their functions.",
   "icons": [
     {
       "src": "favicon.ico",
@@ -10,6 +11,6 @@
   ],
   "start_url": "./index.html",
   "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "theme_color": "#282830",
+  "background_color": "#282830"
 }
