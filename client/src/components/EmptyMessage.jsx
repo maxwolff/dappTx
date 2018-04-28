@@ -5,7 +5,7 @@ const EmptyMessage = props => {
         return (
             <div className="chart-empty">
                 <p>No chart data</p>
-                <small>Example: <a href="javascript:void(0)" onClick={props.loadExample}>analyze CryptoKittiesCore</a></small>
+                <small>Example: <a href="" onClick={props.loadExample}>analyze CryptoKittiesCore</a></small>
             </div>
         )
     }
