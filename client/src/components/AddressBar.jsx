@@ -27,7 +27,7 @@ class AddressBar extends React.Component {
         <input type="text" className="address-input" aria-label="Contract address" placeholder="Enter a contact address" value={this.state.value} onChange={this.handleChange} />
         <input type="submit" value="Analyze" className="button submit" />
       </form>
-    );
+    )
   }
 }
 export default AddressBar

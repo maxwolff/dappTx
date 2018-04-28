@@ -1,18 +1,18 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { ConnectedRouter } from 'react-router-redux';
+import React from 'react'
+import ReactDOM from 'react-dom'
+import { ConnectedRouter } from 'react-router-redux'
 
 // Providers
-import { LocaleProvider } from 'antd';
-import { Provider as ReduxProvider } from 'react-redux';
-import enUS from 'antd/lib/locale-provider/en_US';
+import { LocaleProvider } from 'antd'
+import { Provider as ReduxProvider } from 'react-redux'
+import enUS from 'antd/lib/locale-provider/en_US'
 
-import store, { history } from './store';
+import store, { history } from './store'
 
-import App from './App';
-import './index.css';
+import App from './App'
+import './index.css'
 
-import registerServiceWorker from './registerServiceWorker';
+import registerServiceWorker from './registerServiceWorker'
 
 ReactDOM.render(
   <LocaleProvider locale={enUS}>
@@ -23,6 +23,6 @@ ReactDOM.render(
     </ReduxProvider>
   </LocaleProvider>,
   document.getElementById('dappTx')
-);
+)
 
-registerServiceWorker();
+registerServiceWorker()
