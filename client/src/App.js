@@ -7,7 +7,7 @@ import { routes } from './routes'
 class App extends Component {
   render() {
     return (
-      <div className="dappTx">
+      <div className="contracTx">
         { routes.map(route => (
           <Route key={route.path} {...route} />
         ) ) }
