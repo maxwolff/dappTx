@@ -1,5 +1,5 @@
 import React from 'react'
-import AddressBar from '../components/AddressBar'
+import AddressBar from './AddressBar'
 
 const Title = () => {
     return <div className="title"><img className="logotype" src="logotype.png" alt="ContracTx"/></div>

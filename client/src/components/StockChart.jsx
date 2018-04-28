@@ -1,7 +1,6 @@
 import React from 'react'
-import EmptyMessage from '../components/EmptyMessage'
+import EmptyMessage from './EmptyMessage'
 const ReactHighstock = require('react-highcharts/ReactHighstock.src')
-//var Highlight = require('react-highlight')
 let chartReflow = undefined
 
 class StockChart extends React.Component {
