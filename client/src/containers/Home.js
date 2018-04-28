@@ -81,7 +81,7 @@ class Home extends Component {
     }
 
     loadExample = event => {
-
+        event.preventDefault()
         this.renderAddress(this.state.exampleAddress)
         this.setState({isEmpty: false})
     }
