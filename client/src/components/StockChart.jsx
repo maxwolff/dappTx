@@ -1,7 +1,6 @@
 import React from 'react'
 import EmptyMessage from './EmptyMessage'
 import ReactHighstock from 'react-highcharts/ReactHighstock'
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 
 let chartReflow = undefined
 
