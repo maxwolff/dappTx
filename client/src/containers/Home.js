@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import AppBar from '../components/AppBar'
+import Sidebar from '../components/Sidebar'
 import StockChart from '../components/StockChart'
 import ChartConfig from '../components/ChartConfig'
 import axios from 'axios'
@@ -90,8 +91,9 @@ class Home extends Component {
 
     render() {
         return (
-            <div>
+            <div className="app-container">
                 <AppBar address={this.state.address} enterAddress={this.renderAddress} />
+                <Sidebar loadExample={this.loadExample} />
                 <main className="charts">
                     <StockChart ref={this.volChart} config={this.state.volConfig} title="Contract Volume" subtitle="(percentage of sampled Ethereum transactions)" isEmpty={this.state.isEmpty} loadExample={this.loadExample} />
                     <StockChart ref={this.fnChart} config={this.state.fnConfig} title="Contract Function Calls" isEmpty={this.state.isEmpty} loadExample={this.loadExample} />

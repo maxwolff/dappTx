@@ -24,14 +24,32 @@ body {
 h2 {
     font-size: 1.5rem;
     font-weight: 500;
+    margin-bottom: .75rem;
+}
+
+h3 {
+    font-weight: 500;
+    margin: 1.5rem auto .625rem;
 }
 
 p {
     font-family: 'IBM Plex Sans', sans-serif;
+    line-height: 1.125rem;
+    margin-bottom: .375rem;
 }
 
 a, a:active, a:visited {
     color: #0080ff;
+}
+
+ol {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: .875rem;
+    line-height: 1rem;
+}
+
+small {
+    font-size: .75rem;
 }
 
 ::selection {
@@ -42,25 +60,24 @@ a, a:active, a:visited {
     display: grid;
     background: #282830;
     box-shadow: 0 4px 8px rgba(0,0,0,.25);
-    grid: 3rem / 25% 25% 25% 25%;
+    grid: 3rem / 321px auto;
     position: fixed;
-    top: 0;
     width: 100%;
     z-index: 4;
 }
 
 .title {
     background: #282830;
-    padding: 14px 2rem 0 2rem;
+    padding: 0 2rem;
 }
 
 .logotype {
-    height: 21px;
+    margin-top: 14px;
+    width: 112px;
 }
 
 .address-bar {
     display: flex;
-    grid-column: 2 / 5;
 }
 
 .address-input {
@@ -89,7 +106,6 @@ a, a:active, a:visited {
     font-family: 'IBM Plex Mono', sans-serif;
     font-weight: 400;
     font-size: 1rem;
-    grid-column: 3 / 4;
     padding: 0 2rem;
 }
 
@@ -103,8 +119,19 @@ a, a:active, a:visited {
     cursor: pointer;
 }
 
+.sidebar {
+    background: #f6f6f8;
+    border-right: 1px solid #e6e6e8;
+    box-shadow: 2px 0 4px rgba(0,0,0,.25);
+    height: 100%;
+    padding: 6.25rem 2rem 0;
+    position: fixed;
+    width: 321px;
+}
+
 .charts {
-    padding: 6rem 2rem 0;
+    margin-left: 320px;
+    padding: 5.75rem 2rem 0;
 }
 
 .chart-area {
@@ -115,7 +142,7 @@ a, a:active, a:visited {
     align-items: baseline;
     display: flex;
     justify-content: space-between;
-    margin-bottom: 1.25em;
+    margin-bottom: 1.25rem;
 }
 
 .chart-title {
@@ -126,6 +153,7 @@ a, a:active, a:visited {
 
 .chart-subtitle {
     color: rgba(255,255,255,.5);
+    margin: 0;
 }
 
 .chart-container {
@@ -150,7 +178,6 @@ a, a:active, a:visited {
 
 .chart-empty h2 {
     color: #0080ff;
-    margin-bottom: .75rem;
 }
 
 .highcharts-container {
@@ -168,3 +195,5 @@ a, a:active, a:visited {
 .loading-message p {
     margin-top: .25rem;
 }
+
+/* Breakpoint: 1024px */
