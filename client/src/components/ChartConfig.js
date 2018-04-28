@@ -9,10 +9,11 @@ let ChartConfig = {   //init config for contract usage chart
     loading: {
         showDuration: 500,
         labelStyle: {
-            fontFamily: 'IBM Plex Mono, sans-serif',
+            fontFamily: 'IBM Plex Sans, sans-serif',
             fontSize: '16px',
             fontWeight: 400,
-            color: '#54A0FF'
+            color: '#54A0FF',
+            textAlign: 'center'
         },
         style: {
             opacity: .65

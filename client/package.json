@@ -4,6 +4,7 @@
   "license": "MIT",
   "dependencies": {
     "react": "^16.1.1",
+    "react-addons-css-transition-group": "^15.6.2",
     "react-dom": "^16.1.1",
     "react-scripts": "1.0.17"
   },

@@ -4,8 +4,8 @@ const EmptyMessage = props => {
     if (props.isEmpty) {
         return (
             <div className="chart-empty">
-                <p>No chart data</p>
-                <small>Example: <a href="" onClick={props.loadExample}>analyze CryptoKittiesCore</a></small>
+                <h2>No chart data</h2>
+                <p>Try an example: <a href="" onClick={props.loadExample}>analyze CryptoKittiesCore</a></p>
             </div>
         )
     }

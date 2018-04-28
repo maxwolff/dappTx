@@ -4,48 +4,59 @@
 /* IBM Plex from Google Fonts */
 @import url('https://fonts.googleapis.com/css?family=IBM+Plex+Mono:400,500|IBM+Plex+Sans:400,500');
 
-:root {
-    --offset: 1.5rem;
-    --max_width: 72rem;
-    --columns: 6;
-    --gutter: .5rem;
-    --baseline: 3rem;
-    --baseline-shift: 2rem;
-    --color: hsla(204, 80%, 72%, 0.25);
+html {
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+*, *:before, *:after {
+    box-sizing: inherit;
   }
 
 body {
     background: #282830;
     color: #383840;
-    font-family: 'IBM Plex Mono', monospace;
+    font-family: 'IBM Plex Mono', sans-serif;
+    font-size: 1rem;
     font-weight: 400;
+}
+
+h2 {
+    font-size: 1.5rem;
+    font-weight: 500;
+}
+
+p {
+    font-family: 'IBM Plex Sans', sans-serif;
+}
+
+a, a:active, a:visited {
+    color: #0080ff;
 }
 
 .app-bar {
     display: grid;
     background: #282830;
     box-shadow: 0 4px 8px rgba(0,0,0,.25);
-    grid: 48px / 320px auto;
+    grid: 3rem / 25% 25% 25% 25%;
     position: fixed;
     top: 0;
     width: 100%;
-    z-index: 1;
+    z-index: 4;
 }
 
 .title {
     background: #282830;
-    padding-left: 32px;
-    grid-column: 1 2;
+    padding: 14px 2rem 0 2rem;
 }
 
 .logotype {
     height: 21px;
-    margin-top: 13px;
-    padding-bottom: px;
 }
 
 .address-bar {
     display: flex;
+    grid-column: 2 / 5;
 }
 
 .address-input {
@@ -53,11 +64,10 @@ body {
     border: 0;
     box-sizing: border-box;
     color: white;
-    font-size: 16px;
-    font-family: 'IBM Plex Mono', monospace;
+    font-size: 1rem;
+    font-family: 'IBM Plex Mono', sans-serif;
     font-weight: 400;
-    height: 48px;
-    padding-left: 32px;
+    padding-left: 2rem;
     width: 100%;
 }
 
@@ -72,12 +82,11 @@ body {
     border-radius: 0;
     box-sizing: border-box;
     color: white;
-    font-family: 'IBM Plex Mono', monospace;
+    font-family: 'IBM Plex Mono', sans-serif;
     font-weight: 400;
-    font-size: 16px;
+    font-size: 1rem;
     grid-column: 3 / 4;
-    height: 48px;
-    padding: 0 24px;
+    padding: 0 1.5rem;
 }
 
 .button.submit:focus {
@@ -91,31 +100,67 @@ body {
 }
 
 .charts {
-    padding: 96px 32px 0;
+    padding: 6rem 2rem 0;
 }
 
 .chart-area {
-    margin-bottom: 48px;
+    margin-bottom: 3rem;
 }
 
 .chart-header {
     align-items: baseline;
     display: flex;
     justify-content: space-between;
-    margin-bottom: 20px;
+    margin-bottom: 1.25em;
 }
 
 .chart-title {
     color: white;
-    font-size: 32px;
+    font-size: 2rem;
     font-weight: 500;
 }
 
 .chart-subtitle {
     color: rgba(255,255,255,.5);
-    font-size: 16px;
+}
+
+.chart-container {
+    position: relative;
+}
+
+.chart-empty {
+    align-items: center;
+    background: white;
+    border: 1px solid #e6e6e8;
+    border-radius: 2px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: center;
+    opacity: .65;
+    position: absolute;
+    width: 100%;
+    z-index: 1;
+}
+
+.chart-empty h2 {
+    color: #0080ff;
+    margin-bottom: .75rem;
 }
 
 .highcharts-container {
     box-shadow: 0 2px 4px rgba(0,0,0,.25);
+}
+
+.loading-message {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: center;
+}
+
+.loading-message p {
+    margin-top: .25rem;
 }
