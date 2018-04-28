@@ -12,8 +12,7 @@ let ChartConfig = {   //init config for contract usage chart
             fontFamily: 'IBM Plex Sans, sans-serif',
             fontSize: '16px',
             fontWeight: 400,
-            color: '#54A0FF',
-            textAlign: 'center'
+            color: '#54A0FF'
         },
         style: {
             opacity: .65

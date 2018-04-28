@@ -34,6 +34,10 @@ a, a:active, a:visited {
     color: #0080ff;
 }
 
+::selection {
+    background: #80b8ff;
+}
+
 .app-bar {
     display: grid;
     background: #282830;
@@ -86,7 +90,7 @@ a, a:active, a:visited {
     font-weight: 400;
     font-size: 1rem;
     grid-column: 3 / 4;
-    padding: 0 1.5rem;
+    padding: 0 2rem;
 }
 
 .button.submit:focus {
