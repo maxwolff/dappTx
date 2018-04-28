@@ -11,6 +11,7 @@ class Home extends Component {
 
         this.state = {
             address: '',
+            exampleAddress: '0x06012c8cf97BEaD5deAe237070F9587f8E7A266d',
             volConfig: cloneDeep(ChartConfig),
             fnConfig: cloneDeep(ChartConfig)
         }
@@ -69,19 +70,23 @@ class Home extends Component {
     }
 
     renderAddress = (newAddress) => {
-        this.volChart.current ? this.volChart.current.showLoading() : {}    //trigger loading states before rerender
-        this.fnChart.current ? this.fnChart.current.showLoading() : {}
+        this.volChart.current.showLoading()     //trigger loading states before rerender
+        this.fnChart.current.showLoading()
 
         this.callApi(newAddress)   //get chart data for a new address
+    }
+
+    loadExample = () => {
+        this.renderAddress(this.state.exampleAddress)
     }
 
     render() {
         return (
             <div>
-                <AppBar enterAddress={this.renderAddress} />
+                <AppBar address={this.state.address} enterAddress={this.renderAddress} />
                 <main className="charts">
-                    <StockChart class="chart contract-chart" ref={this.volChart} config={this.state.volConfig} title="Contract Volume" subtitle="(percentage of sampled Ethereum transactions)" loadExample={this.renderAddress} />
-                    <StockChart class="chart function-chart" ref={this.fnChart} config={this.state.fnConfig} title="Contract Function Calls" loadExample={this.renderAddress} />
+                    <StockChart ref={this.volChart} config={this.state.volConfig} title="Contract Volume" subtitle="(percentage of sampled Ethereum transactions)" loadExample={this.loadExample} />
+                    <StockChart ref={this.fnChart} config={this.state.fnConfig} title="Contract Function Calls" loadExample={this.loadExample} />
                 </main>
             </div>
         )

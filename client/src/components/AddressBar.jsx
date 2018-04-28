@@ -2,20 +2,23 @@ import React from 'react'
 
 class AddressBar extends React.Component {
   constructor(props) {
-    super(props);
-    this.state = {value: '0x06012c8cf97BEaD5deAe237070F9587f8E7A266d'};
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+    super(props)
+    this.state = {value: ''}
+    this.handleChange = this.handleChange.bind(this)
+    this.handleSubmit = this.handleSubmit.bind(this)
+  }
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    return ({value: nextProps.address})
   }
 
   handleChange(event) {
-    this.setState({value: event.target.value});
-    console.log(this.state)
+    this.setState({value: event.target.value})
   }
 
   handleSubmit(event) {
-    event.preventDefault();
-    this.props.enterAddress(this.state.value);
+    event.preventDefault()
+    this.props.enterAddress(this.state.value)
   }
 
   render() {
