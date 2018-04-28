@@ -31,4 +31,3 @@ class AddressBar extends React.Component {
   }
 }
 export default AddressBar
-
