@@ -22,7 +22,7 @@ ReactDOM.render(
       </ConnectedRouter>
     </ReduxProvider>
   </LocaleProvider>,
-  document.getElementById('dappTx')
+  document.getElementById('contracTx')
 )
 
 registerServiceWorker()
