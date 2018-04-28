@@ -5,16 +5,14 @@ const ReactHighstock = require('react-highcharts/ReactHighstock.src')
 let chartReflow = undefined
 
 class StockChart extends React.Component {
-  constructor(props) {
-    super(props)
-  }
 
   componentDidMount() {
-    this.showLoading('No chart data')
+    this.showLoading(' ')
     window.dispatchEvent(new Event('resize'))
   }
   
   componentDidUpdate() {
+    this.showLoading()
     const chart = this.refs.chart ? this.refs.chart.getChart() : {}   //allow chart animation while preserving reflow
     chartReflow = chartReflow || chart.reflow
     chart.reflow = () => {}
@@ -29,6 +27,11 @@ class StockChart extends React.Component {
       chart.showLoading('<img src="chart-load.gif" height="48px"><br>Loading chart data...')
   }
 
+  hideLoading() {
+    const chart = this.refs.chart ? this.refs.chart.getChart() : {}
+    chart.hideLoading()
+  }
+
   render() {
     return(
       <div className="chart-area">
@@ -36,7 +39,10 @@ class StockChart extends React.Component {
           <h1 className="chart-title">{this.props.title}</h1>
           <p className="chart-subtitle">{this.props.subtitle}</p>
         </header>
-        <ReactHighstock config={this.props.config} ref="chart" />
+        <div>
+          <EmptyMessage isEmpty={this.props.isEmpty} loadExample={this.props.loadExample} />
+          <ReactHighstock config={this.props.config} ref="chart" />
+        </div>
       </div>
     )
   }
