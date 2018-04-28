@@ -76,14 +76,16 @@ class Home extends Component {
         this.volChart.current.showLoading()     //trigger loading states before rerender
         this.fnChart.current.showLoading()
 
-        this.setState({address: newAddress})    //update address state and address bar input text
+        this.setState({     //update address bar text input, remove chart empty state
+            address: newAddress,
+            isEmpty: false
+        })
         this.callApi(newAddress)   //get chart data for a new address
     }
 
     loadExample = event => {
         event.preventDefault()
         this.renderAddress(this.state.exampleAddress)
-        this.setState({isEmpty: false})
     }
 
     render() {

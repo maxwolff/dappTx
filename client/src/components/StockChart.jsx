@@ -1,6 +1,8 @@
 import React from 'react'
 import EmptyMessage from './EmptyMessage'
-const ReactHighstock = require('react-highcharts/ReactHighstock.src')
+import ReactHighstock from 'react-highcharts/ReactHighstock'
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
+
 let chartReflow = undefined
 
 class StockChart extends React.Component {
@@ -23,7 +25,7 @@ class StockChart extends React.Component {
     if(message)
       chart.showLoading(message)
     else
-      chart.showLoading('<img src="chart-load.gif" height="48px"><br>Loading chart data...')
+      chart.showLoading('<div class="loading-message"><img src="chart-load.gif" height="48px"><p>Loading chart data...</p></div>')
   }
 
   hideLoading() {
@@ -38,7 +40,7 @@ class StockChart extends React.Component {
           <h1 className="chart-title">{this.props.title}</h1>
           <p className="chart-subtitle">{this.props.subtitle}</p>
         </header>
-        <div>
+        <div className="chart-container">
           <EmptyMessage isEmpty={this.props.isEmpty} loadExample={this.props.loadExample} />
           <ReactHighstock config={this.props.config} ref="chart" />
         </div>
