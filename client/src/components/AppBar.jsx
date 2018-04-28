@@ -5,7 +5,7 @@ const Title = () => {
     return <div className="title"><img className="logotype" src="logotype.png" alt="ContracTx"/></div>
 }
 
-const AppBar = (props) => {
+const AppBar = props => {
     return (
         <header className="app-bar">
             <Title />

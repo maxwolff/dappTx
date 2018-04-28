@@ -1,6 +1,6 @@
 import React from 'react'
 
-const EmptyMessage = (props) => {
+const EmptyMessage = props => {
     if (props.isEmpty) {
         return (
             <div className="chart-empty">
