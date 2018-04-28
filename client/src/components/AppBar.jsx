@@ -2,7 +2,7 @@ import React from 'react'
 import AddressBar from './AddressBar'
 
 const Title = () => {
-    return <div className="title"><img className="logotype" src="logotype.png" alt="ContracTx"/></div>
+    return <div className="title"><a href="/"><img className="logotype" src="logotype.png" alt="ContracTx"/></a></div>
 }
 
 const AppBar = props => {
