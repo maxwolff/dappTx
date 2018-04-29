@@ -30,25 +30,25 @@ class Home extends Component {
             const data = response.data
 
             const volSeries = Object.keys(data).map(elem => {   //map contract data for chart series config
-                const date = Math.round(new Date(elem).getTime())
+                const epoch = Math.round(new Date(elem).getTime())
                 const pct = 100.0 * data[elem]['contractTx'] / data[elem]['sampledEthTx']
-                return [date, pct]
+                return [epoch, pct]
             })
 
             const fnSeries = Object.keys(data).reduce((series, elem) => {   //reduce function data for chart series config
-                const date = Math.round(new Date(elem).getTime())
+                const epoch = Math.round(new Date(elem).getTime())
                 Object.keys(data[elem].functions).reduce((arr, func) => {
                     const index = series.findIndex(series => series['name'] === func)
                     if (index < 0) {
                         series.push({
-                            data: [[date, data[elem].functions[func]]],
+                            data: [[epoch, data[elem].functions[func]]],
                             name: func,
                             showInNavigator: true
                         })
                         return series
                     }
                     else {
-                        series[index].data.push([date, data[elem].functions[func]])
+                        series[index].data.push([epoch, data[elem].functions[func]])
                         return series
                     }
                 }, [])
