@@ -24,18 +24,18 @@ body {
 h2 {
     font-size: 1.5rem;
     font-weight: 500;
-    margin-bottom: .75rem;
+    margin-bottom: .625rem;
 }
 
 h3 {
     font-weight: 500;
-    margin: 1.5rem auto .625rem;
+    margin: 2rem auto .875rem;
 }
 
 p {
     font-family: 'IBM Plex Sans', sans-serif;
-    line-height: 1.125rem;
-    margin-bottom: .375rem;
+    line-height: 1.5rem;
+    margin-bottom: .25rem;
 }
 
 a, a:active, a:visited {
@@ -45,7 +45,11 @@ a, a:active, a:visited {
 ol {
     font-family: 'IBM Plex Sans', sans-serif;
     font-size: .875rem;
-    line-height: 1rem;
+    line-height: 1.5rem;
+}
+
+li {
+    margin-bottom: .5rem;
 }
 
 small {
@@ -129,13 +133,35 @@ small {
     width: 321px;
 }
 
+.instructions li {
+    counter-increment: count;
+    padding-left: 1.5rem;
+    position: relative;
+}
+
+.instructions li::before {
+    border: 1px solid #383840;
+    border-radius: 1px;
+    content: counter(count);
+    font-family: 'IBM Plex Mono', sans-serif;
+    font-size: .75rem;
+    font-weight: 500;
+    height: 1rem;
+    left: 0;
+    line-height: .875rem;
+    position: absolute;
+    text-align: center;
+    top: .25rem;
+    width: 1rem;
+}
+
 .charts {
     margin-left: 320px;
     padding: 5.75rem 2rem 0;
 }
 
 .chart-area {
-    margin-bottom: 3rem;
+    margin-bottom: 2.75rem;
 }
 
 .chart-header {
@@ -153,6 +179,7 @@ small {
 
 .chart-subtitle {
     color: rgba(255,255,255,.5);
+    line-height: 1em;
     margin: 0;
 }
 
