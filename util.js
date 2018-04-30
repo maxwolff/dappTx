@@ -11,7 +11,7 @@ const saveFile = (fileName, data) => { // duplicated func from pull data, got to
 	console.log("printed to ", fileName)
 }
 
-const sumObjectsByKey = (...objs) => {
+function sumObjectsByKey(...objs) {
   return objs.reduce((a, b) => {
     for (let k in b) {
       if (b.hasOwnProperty(k))
@@ -22,7 +22,7 @@ const sumObjectsByKey = (...objs) => {
 }
 
 
-const get = async url => {
+async function get(url) {
   try {
     return await request(url)
   } catch (e) {
