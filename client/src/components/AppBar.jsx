@@ -1,8 +1,9 @@
 import React from 'react'
+import Menu from './Menu.svg'
 import AddressBar from './AddressBar'
 
 const Title = () => {
-    return <div className="title"><a href="/"><img className="logotype" src="logotype.png" alt="ContracTx"/></a></div>
+    return <div className="title"><img className="menu-button" src={Menu} alt="Menu button" /><a href="/"><img className="logotype" src="logotype.png" alt="ContracTx"/></a></div>
 }
 
 const AppBar = props => {
