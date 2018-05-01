@@ -16,44 +16,13 @@ html {
 body {
     background: #282830;
     color: #383840;
-    font-family: 'IBM Plex Mono', sans-serif;
+    font-family: 'IBM Plex Sans', sans-serif;
     font-size: 1rem;
     font-weight: 400;
 }
 
-h2 {
-    font-size: 1.5rem;
-    font-weight: 500;
-    margin-bottom: .625rem;
-}
-
-h3 {
-    font-weight: 500;
-    margin: 2rem auto .875rem;
-}
-
-p {
-    font-family: 'IBM Plex Sans', sans-serif;
-    line-height: 1.5rem;
-    margin-bottom: .25rem;
-}
-
 a, a:active, a:visited {
     color: #0080ff;
-}
-
-ol {
-    font-family: 'IBM Plex Sans', sans-serif;
-    font-size: .875rem;
-    line-height: 1.5rem;
-}
-
-li {
-    margin-bottom: .5rem;
-}
-
-small {
-    font-size: .75rem;
 }
 
 ::selection {
@@ -128,13 +97,52 @@ small {
     border-right: 1px solid #e6e6e8;
     box-shadow: 2px 0 4px rgba(0,0,0,.25);
     height: 100%;
-    padding: 6.25rem 2rem 0;
+    overflow: auto;
+    padding: 3rem 2rem;
     position: fixed;
     width: 321px;
 }
 
+.about {
+    margin-top: 2.5rem;
+}
+
+.about section {
+    margin-top: 1.5rem;
+}
+
+.about h2, .chart-empty h2 {
+    font-family: 'IBM Plex Mono', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 500;
+    line-height: 1.875rem;
+    margin-top: .5rem;
+}
+
+.about h3 {
+    font-family: 'IBM Plex Mono', sans-serif;
+    font-weight: 500;
+    line-height: 1.5rem;
+    margin-top: .5rem;
+}
+
+.about p, .chart-empty p {
+    line-height: 1.5rem;
+    margin-top: .5rem;
+}
+
+.about small {
+    display: block;
+    font-size: .75rem;
+    line-height: 1.25rem;
+    margin-top: .25rem;
+}
+
 .instructions li {
     counter-increment: count;
+    font-size: .875rem;
+    line-height: 1.5rem;
+    margin-top: .5rem;
     padding-left: 1.5rem;
     position: relative;
 }
@@ -151,13 +159,25 @@ small {
     line-height: .875rem;
     position: absolute;
     text-align: center;
-    top: .25rem;
+    top: .3125rem;
     width: 1rem;
+}
+
+.snippet {
+    background: #e6e6e8;
+    border-radius: 2px;
+    color: rgba(0,0,0,.5);
+    font-family: 'IBM Plex Mono', sans-serif;
+    font-size: .75rem;
+    line-height: 1.25rem;
+    margin-top: .5em;
+    overflow: auto;
+    padding: .4375rem;
 }
 
 .charts {
     margin-left: 320px;
-    padding: 5.75rem 2rem 0;
+    padding: 5.25rem 2rem 0;
 }
 
 .chart-area {
@@ -173,14 +193,13 @@ small {
 
 .chart-title {
     color: white;
+    font-family: 'IBM Plex Mono', sans-serif;
     font-size: 2rem;
     font-weight: 500;
 }
 
 .chart-subtitle {
     color: rgba(255,255,255,.5);
-    line-height: 1em;
-    margin: 0;
 }
 
 .chart-container {
@@ -205,6 +224,11 @@ small {
 
 .chart-empty h2 {
     color: #0080ff;
+    margin-top: 0;
+}
+
+.chart-empty p {
+    /* margin-top: 0; */
 }
 
 .highcharts-container {

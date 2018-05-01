@@ -1,7 +1,7 @@
 {
   "short_name": "ContracTx",
   "name": "ContracTx",
-  "description": "Use this utility to analyze Ethereum smart contracts and their functions.",
+  "description": "Use this utility to analyze Ethereum smart contracts and their functions",
   "icons": [
     {
       "src": "favicon.ico",
