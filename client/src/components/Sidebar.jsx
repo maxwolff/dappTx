@@ -28,7 +28,8 @@ class Sidebar extends React.Component {
           </section>
           <section>
             <h3>Colophon</h3>
-            <small>Built with <a href="https://reactjs.org" target="_blank" rel="noopener noreferrer">React</a> + <a href="https://www.highcharts.com/" target="_blank" rel="noopener noreferrer">Highcharts</a>
+            <small>View project repository on <a href="https://github.com/maxwolff/dappTx" target="_blank" rel="noopener noreferrer">Github</a>
+            <br />Built with <a href="https://reactjs.org" target="_blank" rel="noopener noreferrer">React</a> + <a href="https://www.highcharts.com/" target="_blank" rel="noopener noreferrer">Highcharts</a>
             <br />Typeset with <a href="https://www.ibm.com/plex/" target="_blank" rel="noopener noreferrer">IBM Plex</a>
             <br />Backend by <a href="https://twitter.com/maxcwolff" target="_blank" rel="noopener noreferrer">Max Wolff</a>
             <br />Design + frontend by <a href="https://twitter.com/stedman_rh" target="_blank" rel="noopener noreferrer">Stedman Halliday</a>

@@ -98,7 +98,7 @@ a, a:active, a:visited {
     box-shadow: 2px 0 4px rgba(0,0,0,.25);
     height: 100%;
     overflow: auto;
-    padding: 3rem 2rem;
+    padding: 3rem 2rem 2rem;
     position: fixed;
     width: 321px;
 }
@@ -181,7 +181,7 @@ a, a:active, a:visited {
 }
 
 .chart-area {
-    margin-bottom: 2.75rem;
+    margin-bottom: 2.25rem;
 }
 
 .chart-header {
