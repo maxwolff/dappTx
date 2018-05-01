@@ -5,18 +5,37 @@ class Sidebar extends React.Component {
   render() {
     return(
       <aside className="sidebar">
-          <h2>About</h2>
-          <p>Use this utility to analyze Ethereum smart contracts and their functions.</p>
-          <small>Example: <a href="" onClick={this.props.loadExample}>analyze CryptoKittiesCore</a></small>
-          <h3>Usage Guide</h3>
-          <ol className="instructions">
-            <li>Find an ERC20 contract address (search on <a href="https://etherscan.io" target="_blank" rel="noopener noreferrer">Etherscan</a>)</li>
-            <li>Paste the contract address into the navbar and click “Analyze"</li>
-            <li>The first chart plots the contract’s transaction volume as a percentage of sampled Ethereum transactions over time.</li>
-            <li>The second chart plots calls to each of the contract’s functions over time.</li>
-          </ol>
-          <h3>API + Repository</h3>
-          <p>API endpoint: /api/:contractID/:startTime/:endTime</p>
+        <article className="about">
+          <section>
+            <h2>About</h2>
+            <p>Use this utility to analyze Ethereum smart contracts and their functions</p>
+            <small>Example: <a href="" onClick={this.props.loadExample}>analyze CryptoKittiesCore</a></small>
+          </section>
+          <section>
+            <h3>Usage Guide</h3>
+            <ol className="instructions">
+              <li>Find an ERC20 contract address (search on <a href="https://etherscan.io" target="_blank" rel="noopener noreferrer">Etherscan</a>)</li>
+              <li>Paste the address into the field at the top then click "Analyze"</li>
+            </ol>
+          </section>
+          <section>
+            <h3>API Requests</h3>
+            <ol className="instructions">
+              <li>API calls use the following endpoint:</li>
+              <pre className="snippet">/api/{'{contractID}'}/{'{startTime}'}/{'{endTime}'}</pre>
+              <li>Format each endpoint parameter as a hexadecimal number <small>(e.g. "0x5A1340E0")</small></li>
+            </ol>
+          </section>
+          <section>
+            <h3>Colophon</h3>
+            <small>Built with <a href="https://reactjs.org" target="_blank" rel="noopener noreferrer">React</a> + <a href="https://www.highcharts.com/" target="_blank" rel="noopener noreferrer">Highcharts</a>
+            <br />Typeset with <a href="https://www.ibm.com/plex/" target="_blank" rel="noopener noreferrer">IBM Plex</a>
+            <br />Backend by <a href="https://twitter.com/maxcwolff" target="_blank" rel="noopener noreferrer">Max Wolff</a>
+            <br />Design + frontend by <a href="https://twitter.com/stedman_rh" target="_blank" rel="noopener noreferrer">Stedman Halliday</a>
+            <br />Inspired by <a href="https://twitter.com/owocki" target="_blank" rel="noopener noreferrer">Kevin Owocki</a>
+            <br />Special thanks to the <a href="https://gitcoin.co/" target="_blank" rel="noopener noreferrer">Gitcoin</a> community</small>
+          </section>
+        </article>
       </aside>
     )
   }

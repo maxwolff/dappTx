@@ -23,10 +23,10 @@ class Home extends Component {
     }
 
     callApi = async newAddress => {
-        const startDate = '/0x5A1340E0'     //earliest data: 2017-11-23; Unix hex timestamp
-        const endDate = '/0x' + Math.round(Date.now()/1000.0).toString(16)    //convert current time to hex timestamp
+        const startTime = '/0x5A1340E0'     //earliest data: 2017-11-23; Unix hex timestamp
+        const endTime = '/0x' + Math.round(Date.now()/1000.0).toString(16)    //convert current time to hex timestamp
 
-        const url = '/api/' + newAddress + startDate + endDate
+        const url = '/api/' + newAddress + startTime + endTime
         console.log(url)
 
         axios.get(url).then(response => {   //call API with URL to get data
