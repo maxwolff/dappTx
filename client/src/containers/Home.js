@@ -16,11 +16,21 @@ class Home extends Component {
             volConfig: cloneDeep(ChartConfig),
             fnConfig: cloneDeep(ChartConfig),
             isEmpty: true,
-            isLoading: false
+            isLoading: false,
+            sidebar: 'open'
         }
 
         this.volChart = React.createRef()    //chart component refs for imperative loading animations
         this.fnChart = React.createRef()
+    }
+
+    componentDidMount() {
+        window.onresize = () => {
+            if (window.innerWidth < 960)
+                this.setState({sidebar: 'closed'})
+            else
+                this.setState({sidebar: 'open'})
+        }
     }
 
     callApi = async newAddress => {
@@ -96,12 +106,21 @@ class Home extends Component {
         this.renderAddress(this.state.exampleAddress)
     }
 
+    toggleSidebar = event => {
+        event.preventDefault()
+        this.setState((prevState, props) => {
+            if (prevState.sidebar === 'open')
+                return {sidebar: 'closed'}
+            else return {sidebar: 'open'}
+        })
+    }
+
     render() {
         return (
             <div className="app-container">
                 <AppBar address={this.state.address} enterAddress={this.renderAddress} />
-                <Sidebar loadExample={this.loadExample} />
-                <main className="charts">
+                <Sidebar sidebar={this.state.sidebar} loadExample={this.loadExample} />
+                <main className={'charts ' + this.state.sidebar +'Sidebar' }>
                     <StockChart ref={this.volChart} config={this.state.volConfig} title="Contract Volume" subtitle="(percentage of sampled Ethereum transactions)" isEmpty={this.state.isEmpty} isLoading={this.state.isLoading} loadExample={this.loadExample} />
                     <StockChart ref={this.fnChart} config={this.state.fnConfig} title="Contract Function Calls" isEmpty={this.state.isEmpty} isLoading={this.state.isLoading} loadExample={this.loadExample} />
                 </main>

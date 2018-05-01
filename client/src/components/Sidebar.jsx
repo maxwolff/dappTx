@@ -4,7 +4,7 @@ class Sidebar extends React.Component {
 
   render() {
     return(
-      <aside className="sidebar">
+      <aside className={'sidebar ' + this.props.sidebar}>
         <article className="about">
           <section>
             <h2>About</h2>
