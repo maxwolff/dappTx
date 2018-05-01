@@ -15,7 +15,8 @@ class Home extends Component {
             exampleAddress: '0x06012c8cf97BEaD5deAe237070F9587f8E7A266d',
             volConfig: cloneDeep(ChartConfig),
             fnConfig: cloneDeep(ChartConfig),
-            isEmpty: true
+            isEmpty: true,
+            isLoading: false
         }
 
         this.volChart = React.createRef()    //chart component refs for imperative loading animations
@@ -65,7 +66,8 @@ class Home extends Component {
 
             this.setState({
                 volConfig: newVolConfig,    //update charts with new configs
-                fnConfig: newFnConfig
+                fnConfig: newFnConfig,
+                isLoading: false
             })
 
             this.volChart.current.hideLoading()     //hide loading states post-render
@@ -80,10 +82,12 @@ class Home extends Component {
         this.volChart.current.showLoading()     //trigger loading states before rerender
         this.fnChart.current.showLoading()
 
-        this.setState({     //update address bar text input, remove chart empty state
-            address: newAddress,
-            isEmpty: false
+        this.setState({
+            address: newAddress,    //update address bar, remove chart empty state
+            isEmpty: false,
+            isLoading: true
         })
+
         this.callApi(newAddress)   //get chart data for a new address
     }
 
@@ -98,8 +102,8 @@ class Home extends Component {
                 <AppBar address={this.state.address} enterAddress={this.renderAddress} />
                 <Sidebar loadExample={this.loadExample} />
                 <main className="charts">
-                    <StockChart ref={this.volChart} config={this.state.volConfig} title="Contract Volume" subtitle="(percentage of sampled Ethereum transactions)" isEmpty={this.state.isEmpty} loadExample={this.loadExample} />
-                    <StockChart ref={this.fnChart} config={this.state.fnConfig} title="Contract Function Calls" isEmpty={this.state.isEmpty} loadExample={this.loadExample} />
+                    <StockChart ref={this.volChart} config={this.state.volConfig} title="Contract Volume" subtitle="(percentage of sampled Ethereum transactions)" isEmpty={this.state.isEmpty} isLoading={this.state.isLoading} loadExample={this.loadExample} />
+                    <StockChart ref={this.fnChart} config={this.state.fnConfig} title="Contract Function Calls" isEmpty={this.state.isEmpty} isLoading={this.state.isLoading} loadExample={this.loadExample} />
                 </main>
             </div>
         )

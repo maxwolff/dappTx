@@ -13,10 +13,12 @@ class StockChart extends React.Component {
   
   componentDidUpdate() {
     this.showLoading()
-    const chart = this.refs.chart ? this.refs.chart.getChart() : {}   //allow chart animation while preserving reflow
-    chartReflow = chartReflow || chart.reflow
-    chart.reflow = () => {}
-    setTimeout(() => (chart.reflow = chartReflow))
+    if (!this.props.isLoading){
+      const chart = this.refs.chart ? this.refs.chart.getChart() : {}   //allow chart animation while preserving reflow
+      chartReflow = chartReflow || chart.reflow
+      chart.reflow = () => {}
+      setTimeout(() => (chart.reflow = chartReflow))
+    }
   }
 
   showLoading(message) {   //expose loading state trigger function for imperative calls from parent component via ref
