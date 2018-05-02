@@ -17,20 +17,11 @@ class Home extends Component {
             fnConfig: cloneDeep(ChartConfig),
             isEmpty: true,
             isLoading: false,
-            sidebar: 'open'
+            sidebar: 'closed'
         }
 
         this.volChart = React.createRef()    //chart component refs for imperative loading animations
         this.fnChart = React.createRef()
-    }
-
-    componentDidMount() {
-        window.onresize = () => {
-            if (window.innerWidth < 960)
-                this.setState({sidebar: 'closed'})
-            else
-                this.setState({sidebar: 'open'})
-        }
     }
 
     callApi = async newAddress => {
@@ -89,36 +80,48 @@ class Home extends Component {
     }
 
     renderAddress = newAddress => {
-        this.volChart.current.showLoading()     //trigger loading states before rerender
-        this.fnChart.current.showLoading()
+        if (!this.state.isLoading){
+            this.volChart.current.showLoading()     //trigger loading states before rerender
+            this.fnChart.current.showLoading()
 
-        this.setState({
-            address: newAddress,    //update address bar, remove chart empty state
-            isEmpty: false,
-            isLoading: true
-        })
+            this.setState({
+                address: newAddress,    //update address bar, remove chart empty state
+                isEmpty: false,
+                isLoading: true,
+                sidebar: 'closed'                
+            })
 
-        this.callApi(newAddress)   //get chart data for a new address
+            this.callApi(newAddress)   //get chart data for a new address
+        }
     }
 
     loadExample = event => {
         event.preventDefault()
-        this.renderAddress(this.state.exampleAddress)
+        if (!this.state.isLoading ){
+            this.renderAddress(this.state.exampleAddress)
+        }
     }
 
     toggleSidebar = event => {
-        event.preventDefault()
-        this.setState((prevState, props) => {
-            if (prevState.sidebar === 'open')
-                return {sidebar: 'closed'}
-            else return {sidebar: 'open'}
-        })
+        if (!this.state.isLoading) {
+            this.setState((prevState, props) => {
+                if (prevState.sidebar === 'open')
+                    return ({
+                        sidebar: 'closed',
+                        isLoading: false
+                    })
+                else return ({
+                    sidebar: 'open',
+                    isLoading: false
+                })
+            })
+        }
     }
 
     render() {
         return (
             <div className="app-container">
-                <AppBar address={this.state.address} enterAddress={this.renderAddress} />
+                <AppBar address={this.state.address} enterAddress={this.renderAddress} toggleSidebar={this.toggleSidebar} />
                 <Sidebar sidebar={this.state.sidebar} loadExample={this.loadExample} />
                 <main className={'charts ' + this.state.sidebar +'Sidebar' }>
                     <StockChart ref={this.volChart} config={this.state.volConfig} title="Contract Volume" subtitle="(percentage of sampled Ethereum transactions)" isEmpty={this.state.isEmpty} isLoading={this.state.isLoading} loadExample={this.loadExample} />

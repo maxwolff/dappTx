@@ -2,6 +2,16 @@ import React from 'react'
 
 class Sidebar extends React.Component {
 
+  constructor(props) {
+    super(props)
+    this.handleClick = this.handleClick.bind(this)
+  }
+
+  handleClick(event) {
+    event.preventDefault()
+    this.props.loadExample(event)
+}
+
   render() {
     return(
       <aside className={'sidebar ' + this.props.sidebar}>
@@ -9,7 +19,7 @@ class Sidebar extends React.Component {
           <section>
             <h2>About</h2>
             <p>Use this utility to analyze Ethereum smart contracts and their functions</p>
-            <small>Example: <a href="" onClick={this.props.loadExample}>analyze CryptoKittiesCore</a></small>
+            <small>Example: <a href="" id="sidebar-eg" onClick={this.handleClick}>analyze CryptoKittiesCore</a></small>
           </section>
           <section>
             <h3>Usage Guide</h3>
