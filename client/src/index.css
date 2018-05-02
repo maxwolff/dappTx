@@ -19,6 +19,7 @@ body {
     font-family: 'IBM Plex Sans', sans-serif;
     font-size: 1rem;
     font-weight: 400;
+    overflow: hidden;
 }
 
 a, a:active, a:visited {
@@ -103,22 +104,24 @@ a, a:active, a:visited {
 .sidebar {
     background: #f6f6f8;
     border-right: 1px solid #e6e6e8;
-    
     height: 100%;
     overflow: auto;
     padding: 3rem 2rem 2rem;
     position: fixed;
-    transition: .5s ease-out;
+    transition: .3s ease-out;
     width: 321px;
+    z-index: 2;
 }
 
 .sidebar.open {
-    box-shadow: none;
+    box-shadow: 2px 0 4px rgba(0,0,0,.25);
+    opacity: 1;
     transform: translateX(0)
 }
 
 .sidebar.closed {
     box-shadow: none;
+    opacity: .5;
     transform: translateX(-100%)
 }
 
@@ -195,16 +198,39 @@ a, a:active, a:visited {
 }
 
 .charts {
+    height: 100%;
     padding: 5.25rem 2rem 0;
-    transition: .5s ease-out;
+    position: absolute;
+    transition: .3s;
+    width: 100%;
 }
 
 .charts.openSidebar {
-    margin-left: 320px;
+    opacity: .5;
+    overflow-y: hidden;
+    transform: translateX(320px);
+}
+
+.charts.openSidebar::after {
+    content: '';
+    height: 100%;
+    margin-left: -2rem;
+    position: fixed;
+    top: -3rem;
+    width: 100%;
+    z-index: 6;
 }
 
 .charts.closedSidebar {
-    margin-left: 0px;
+    opacity: 1;
+    overflow-y: scroll;
+    transform: translateX(0)
+}
+
+.charts.closedSidebar::after {
+    visibility: hidden;
+    background: rgba(0,0,0,.25);
+    opacity: 0;
 }
 
 .chart-area {
@@ -284,13 +310,13 @@ a, a:active, a:visited {
         width: 112px;
     }
 
-    .sidebar.open {
+    .sidebar {
         padding: 3rem 2rem 2rem;
         width: 261px;
     }
 
     .charts.openSidebar {
-        margin-left: 260px;
+        transform: translateX(260px)
     }
 }
 
@@ -307,6 +333,10 @@ a, a:active, a:visited {
     .charts {
         padding: 8.25rem 2rem 0;
     }
+
+    .sidebar {
+        padding: 6rem 2rem 2rem;
+    }
 }
 
 @media(max-width: 660px) {
@@ -322,24 +352,52 @@ a, a:active, a:visited {
         line-height: 1.5rem;
         margin-top: .5rem;
     }
+
+    .sidebar {
+        padding: 5.625rem 2rem 2rem;
+    }
 }
 
 @media(max-width: 480px) {
+
     .charts {
         padding: 8.25rem 0 0;
     }
 
+    .charts.openSidebar {
+        transform: translateX(100%)
+    }
+
     .chart-header {
-        padding: 0 2rem;
+        padding: 0 1rem;
     }
 
     .chart-title {
-        font-size: 1rem;
+        font-size: 1.5rem;
     }
 
     .chart-subtitle {
-        font-size: .75rem;
+        font-size: 1rem;
     }
 
+    .sidebar {
+        width: 100%;
+    }
+
+    .about {
+        max-width: 260px;
+    }
+
+    .title {
+        padding: 0 1em;
+    }
+
+    .address-input {
+        padding: 1em;
+    }
+
+    .button.submit {
+        padding: 0 1em;
+    }
 
 }
