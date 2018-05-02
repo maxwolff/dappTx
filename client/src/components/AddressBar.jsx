@@ -18,7 +18,8 @@ class AddressBar extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault()
-    this.props.enterAddress(this.state.value)
+    if (this.state.value)
+      this.props.enterAddress(this.state.value)
   }
 
   render() {
