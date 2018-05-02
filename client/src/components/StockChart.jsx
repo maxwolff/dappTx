@@ -18,7 +18,9 @@ class StockChart extends React.Component {
       chart.reflow = () => {}
       setTimeout(() => (chart.reflow = chartReflow))
     }
-    else this.showLoading()
+    else {
+      this.showLoading()
+    }
   }
 
   showLoading(message) {   //expose loading state trigger function for imperative calls from parent component via ref
