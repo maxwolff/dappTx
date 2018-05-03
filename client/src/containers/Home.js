@@ -5,6 +5,7 @@ import StockChart from '../components/StockChart'
 import ChartConfig from '../components/ChartConfig'
 import axios from 'axios'
 import { cloneDeep } from 'lodash'
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 
 class Home extends Component {
     constructor(props) {
@@ -137,14 +138,22 @@ class Home extends Component {
 
     render() {
         return (
-            <div className="app-container">
-                <AppBar address={this.state.address} enterAddress={this.renderAddress} toggleSidebar={this.toggleSidebar} />
-                <Sidebar sidebar={this.state.sidebar} loadExample={this.loadExample} />
-                <main className={'charts ' + this.state.sidebar + 'Sidebar'}>
-                    <StockChart ref={this.volChart} config={this.state.volConfig} title="Contract Volume" subtitle="(percentage of sampled Ethereum transactions)" isEmpty={this.state.isEmpty} isLoading={this.state.isLoading} loadExample={this.loadExample} threwError={this.state.threwError} />
-                    <StockChart ref={this.fnChart} config={this.state.fnConfig} title="Contract Function Calls" isEmpty={this.state.isEmpty} isLoading={this.state.isLoading} loadExample={this.loadExample} threwError={this.state.threwError} />
-                </main>
-            </div>
+            <ReactCSSTransitionGroup transitionName="AppContainer" transitionAppear={true} transitionAppearTimeout={5000}>
+                <div key={'AppContainer'} className="app-container">
+                    <ReactCSSTransitionGroup transitionName="AppBar" transitionAppear={true} transitionAppearTimeout={5000}>
+                        <AppBar key={AppBar} address={this.state.address} enterAddress={this.renderAddress} toggleSidebar={this.toggleSidebar} />
+                    </ReactCSSTransitionGroup>
+                    <Sidebar sidebar={this.state.sidebar} loadExample={this.loadExample} />
+                    <main className={'charts ' + this.state.sidebar + 'Sidebar'}>
+                        <ReactCSSTransitionGroup transitionName="VolChart" transitionAppear={true} transitionAppearTimeout={5000}>
+                            <StockChart key={'VolChart'} ref={this.volChart} config={this.state.volConfig} title="Contract Volume" subtitle="(percentage of sampled Ethereum transactions)" isEmpty={this.state.isEmpty} isLoading={this.state.isLoading} loadExample={this.loadExample} threwError={this.state.threwError} />
+                        </ReactCSSTransitionGroup>
+                        <ReactCSSTransitionGroup transitionName="FnChart" transitionAppear={true} transitionAppearTimeout={5000}>    
+                            <StockChart key={'FnChart'} ref={this.fnChart} config={this.state.fnConfig} title="Contract Function Calls" isEmpty={this.state.isEmpty} isLoading={this.state.isLoading} loadExample={this.loadExample} threwError={this.state.threwError} />
+                        </ReactCSSTransitionGroup>
+                    </main>
+                </div>
+            </ReactCSSTransitionGroup>
         )
     }
 }
