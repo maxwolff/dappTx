@@ -14,7 +14,6 @@ html {
   }
 
 body {
-    background: #282830;
     color: #383840;
     font-family: 'IBM Plex Sans', sans-serif;
     font-size: 1rem;
@@ -30,6 +29,21 @@ a, a:active, a:visited {
     background: #80b8ff;
 }
 
+.app-container {
+    height: 100vh;
+    width: 100vw;
+    background: #282830;
+}
+
+.AppContainer-appear {
+    background: white;
+}
+  
+.AppContainer-appear.AppContainer-appear-active {
+    background: #282830;
+    transition: .3s ease-out 1s;
+}
+
 .app-bar {
     display: grid;
     background: #282830;
@@ -38,6 +52,17 @@ a, a:active, a:visited {
     position: fixed;
     width: 100%;
     z-index: 4;
+}
+
+.AppBar-appear {
+    opacity: 0;
+    transform: translateY(-100%);
+}
+  
+.AppBar-appear.AppBar-appear-active {
+    opacity: 1;
+    transform: translateY(0);
+    transition: .75s ease-in 1s;
 }
 
 .title {
@@ -108,7 +133,7 @@ a, a:active, a:visited {
     overflow: auto;
     padding: 3rem 2rem 2rem;
     position: fixed;
-    transition: .3s ease-out;
+    transition: .5s;
     width: 321px;
     z-index: 2;
 }
@@ -201,7 +226,7 @@ a, a:active, a:visited {
     height: 100%;
     padding: 5.25rem 2rem 0;
     position: absolute;
-    transition: .3s;
+    transition: .5s;
     width: 100%;
 }
 
@@ -227,10 +252,19 @@ a, a:active, a:visited {
     transform: translateX(0)
 }
 
-.charts.closedSidebar::after {
-    visibility: hidden;
-    background: rgba(0,0,0,.25);
+.VolChart-appear, .FnChart-appear {
     opacity: 0;
+    transform: translateY(2.5vh);
+}
+  
+.VolChart-appear.VolChart-appear-active, .FnChart-appear.FnChart-appear-active {
+    opacity: 1;
+    transform: translateY(0);
+    transition: .75s ease-in 1.75s;
+}
+
+.FnChart-appear.FnChart-appear-active {
+    transition: .75s ease-in 2.25s;
 }
 
 .chart-area {

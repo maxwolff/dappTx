@@ -16,6 +16,7 @@
   "proxy": "http://localhost:5000/",
   "devDependencies": {
     "node-sass": "^4.9.0",
+    "react-addons-css-transition-group": "^15.6.2",
     "sass-loader": "^7.0.1"
   }
 }
