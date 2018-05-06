@@ -232,7 +232,7 @@ a, a:active, a:visited {
 
 .charts.openSidebar {
     opacity: .5;
-    overflow-y: hidden;
+    overflow: hidden;
     transform: translateX(320px);
 }
 
