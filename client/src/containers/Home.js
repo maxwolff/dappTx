@@ -37,7 +37,7 @@ class Home extends Component {
             const data = response.data
             if (!Object.keys(data).length) {
                 const newVolConfig = cloneDeep(this.state.volConfig)    //create new chart configs with fetched data
-                newVolConfig.series[0].data = []
+                newVolConfig.series = []
                 const newFnConfig = cloneDeep(this.state.fnConfig)
                 newFnConfig.series = []
 
@@ -48,11 +48,20 @@ class Home extends Component {
                 throw (new Error('No data found'))
             }
 
-            const volSeries = Object.keys(data).map(elem => {   //map contract data for chart series config
+            const volData = Object.keys(data).map(elem => {   //map contract data for chart series config
                 const epoch = Math.round(new Date(elem).getTime())
                 const pct = 100.0 * data[elem]['contractTx'] / data[elem]['sampledEthTx']
                 return [epoch, pct]
             })
+
+            const volSeries = [{
+                data: volData,
+                name: 'Volume',
+                tooltip: {
+                    valueDecimals: 2,
+                    valueSuffix: '%'
+                }
+            }]
 
             const fnSeries = Object.keys(data).reduce((series, elem) => {   //reduce function data for chart series config
                 const epoch = Math.round(new Date(elem).getTime())
@@ -75,7 +84,7 @@ class Home extends Component {
             }, [])
 
             const newVolConfig = cloneDeep(this.state.volConfig)    //create new chart configs with fetched data
-            newVolConfig.series[0].data = volSeries
+            newVolConfig.series = volSeries
             const newFnConfig = cloneDeep(this.state.fnConfig)
             newFnConfig.series = fnSeries
 

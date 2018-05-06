@@ -85,14 +85,6 @@ let ChartConfig = {   //init config for contract usage chart
         trackBackgroundColor: '#e6e6e8',
         trackBorderColor: '#e6e6e8'
     },
-    series: [{
-        data: [],
-        name: 'Volume',
-        tooltip: {
-            valueDecimals: 2,
-            valueSuffix: '%'
-        }
-    }],
     tooltip: { 
         backgroundColor: 'rgba(255,255,255,.85)',
         borderRadius: 2,
