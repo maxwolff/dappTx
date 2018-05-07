@@ -241,7 +241,7 @@ a, a:active, a:visited {
     height: 100%;
     margin-left: -2rem;
     position: fixed;
-    top: -3rem;
+    top: 0;
     width: 100%;
     z-index: 6;
 }
