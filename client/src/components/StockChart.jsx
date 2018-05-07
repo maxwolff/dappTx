@@ -1,4 +1,5 @@
 import React from 'react'
+import {findDOMNode} from 'react-dom'
 import EmptyMessage from './EmptyMessage'
 import ReactHighstock from 'react-highcharts/ReactHighstock'
 
@@ -8,7 +9,9 @@ class StockChart extends React.Component {
 
   componentDidMount() {
     this.showLoading(' ')
-    window.dispatchEvent(new Event('resize'))
+    window.dispatchEvent(new Event('resize'))   //fix rendering bugs
+    const chart = findDOMNode(this).querySelector('.chart-container')
+    chart.style.height = chart.offsetHeight + 'px'
   }
   
   componentDidUpdate() {
