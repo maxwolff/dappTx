@@ -248,7 +248,7 @@ a, a:active, a:visited {
 
 .charts.closedSidebar {
     opacity: 1;
-    overflow-y: scroll;
+    overflow: auto;
     transform: translateX(0)
 }
 
