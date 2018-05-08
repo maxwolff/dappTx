@@ -154,11 +154,11 @@ class Home extends Component {
                     </ReactCSSTransitionGroup>
                     <Sidebar sidebar={this.state.sidebar} loadExample={this.loadExample} />
                     <main className={'charts ' + this.state.sidebar + 'Sidebar'}>
-                        <ReactCSSTransitionGroup transitionName="VolChart" transitionAppear={true} transitionAppearTimeout={5000} transitionEnterTimeout={5000} transitionLeaveTimeout={5000}>
-                            <StockChart key={'VolChart'} ref={this.volChart} config={this.state.volConfig} title="Contract Volume" subtitle="(percentage of sampled Ethereum transactions)" isEmpty={this.state.isEmpty} isLoading={this.state.isLoading} loadExample={this.loadExample} threwError={this.state.threwError} />
-                        </ReactCSSTransitionGroup>
                         <ReactCSSTransitionGroup transitionName="FnChart" transitionAppear={true} transitionAppearTimeout={5000} transitionEnterTimeout={5000} transitionLeaveTimeout={5000}>    
                             <StockChart key={'FnChart'} ref={this.fnChart} config={this.state.fnConfig} title="Contract Function Calls" isEmpty={this.state.isEmpty} isLoading={this.state.isLoading} loadExample={this.loadExample} threwError={this.state.threwError} />
+                        </ReactCSSTransitionGroup>
+                        <ReactCSSTransitionGroup transitionName="VolChart" transitionAppear={true} transitionAppearTimeout={5000} transitionEnterTimeout={5000} transitionLeaveTimeout={5000}>
+                            <StockChart key={'VolChart'} ref={this.volChart} config={this.state.volConfig} title="Contract Volume" subtitle="(percentage of sampled Ethereum transactions)" isEmpty={this.state.isEmpty} isLoading={this.state.isLoading} loadExample={this.loadExample} threwError={this.state.threwError} />
                         </ReactCSSTransitionGroup>
                     </main>
                 </div>
