@@ -1,4 +1,4 @@
-import * as Containers from './containers';
+import * as Containers from './containers'
 
 
 export const routes = [
@@ -7,4 +7,4 @@ export const routes = [
     exact: true,
     path: '/',
   }
-];
+]
