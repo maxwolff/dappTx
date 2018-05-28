@@ -43,8 +43,8 @@ class Sidebar extends React.Component {
             <br />Typeset with <a href="https://www.ibm.com/plex/" target="_blank" rel="noopener noreferrer">IBM Plex</a>
             <br />Backend by <a href="https://twitter.com/maxcwolff" target="_blank" rel="noopener noreferrer">Max Wolff</a>
             <br />Design + frontend by <a href="https://twitter.com/stedman_rh" target="_blank" rel="noopener noreferrer">Stedman Halliday</a>
-            <br />Inspired by <a href="https://twitter.com/owocki" target="_blank" rel="noopener noreferrer">Kevin Owocki</a>
-            <br />Special thanks to the <a href="https://gitcoin.co/" target="_blank" rel="noopener noreferrer">Gitcoin</a> community</small>
+            <br />Special thanks <a href="https://github.com/jtmoulia" target="_blank" rel="noopener noreferrer">Thomas Moulia</a>
+            <br />and <a href="https://gitcoin.co/" target="_blank" rel="noopener noreferrer">Gitcoin</a></small>
           </section>
         </article>
       </aside>
