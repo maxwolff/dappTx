@@ -14,7 +14,7 @@
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },
-  "proxy": "http://localhost:5000/",
+  "proxy": "https://shrouded-journey-22394.herokuapp.com/", 
   "devDependencies": {
     "node-sass": "^4.9.0",
     "react-addons-css-transition-group": "^15.6.2",
