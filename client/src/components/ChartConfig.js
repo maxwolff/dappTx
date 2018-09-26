@@ -19,6 +19,19 @@ let ChartConfig = {   //init config for contract usage chart
         }
     },
     rangeSelector: {
+        buttons: [{
+            type: 'week',
+            count: 1,
+            text: '1w'
+        }, {
+            type: 'week',
+            count: 2,
+            text: '2w'
+        }, {
+            type: 'month',
+            count: 1,
+            text: '1m'
+        }],
         buttonTheme: {
             fill: '#f6f6f8',
             r: 1,

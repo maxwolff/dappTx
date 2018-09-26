@@ -27,7 +27,9 @@ class Home extends Component {
     }
 
     callApi = async newAddress => {
-        const startTime = '/0x55b9cb70'     //Ethereum start date: 2015-07-30; Unix hex timestamp
+        const startDate = new Date()
+        startDate.setMonth(startDate.getMonth()-1) // pull one month of data
+        const startTime = '/0x' + Math.round(startDate.getTime() / 1000.0).toString(16) // hex conversion
         const endTime = '/0x' + Math.round(Date.now() / 1000.0).toString(16)    //convert current time to hex timestamp
 
         const url = '/api/' + newAddress + startTime + endTime

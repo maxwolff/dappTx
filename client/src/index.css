@@ -260,11 +260,11 @@ a, a:active, a:visited {
 .VolChart-appear.VolChart-appear-active, .FnChart-appear.FnChart-appear-active {
     opacity: 1;
     transform: translateY(0);
-    transition: .75s ease-in 1.75s;
+    transition: .75s ease-in 2.25s;
 }
 
 .FnChart-appear.FnChart-appear-active {
-    transition: .75s ease-in 2.25s;
+    transition: .75s ease-in 1.75s;
 }
 
 .chart-area {
